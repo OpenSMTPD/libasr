@@ -492,6 +492,7 @@ AC_CHECK_FUNCS([ \
 	setsid \
 	sigaction \
 	socketpair \
+	snprintf \
 	strdup \
 	strerror \
 	strlcat \
