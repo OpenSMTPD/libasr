@@ -14,9 +14,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-dnl AC_INIT([OpenSMTPD-portable],[4.9.0],[Charles Longeau <chl@openbsd.org>])
-dnl AC_INIT([OpenSMTPD-portable], m4_esyscmd(date +%Y%m%d%H%M%S | sed -e 's/^\(.*\)$/5.2-\1/' | tr -d '\n'),[Charles Longeau <chl@openbsd.org>])
-AC_INIT([opensmtpd], [portable], [bugs@opensmtpd.org])
+AC_INIT([libasr], [portable], [bugs@opensmtpd.org])
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -272,7 +270,6 @@ AC_CHECK_HEADERS([ \
 	fcntl.h \
 	getopt.h \
 	limits.h \
-	maillock.h \
 	mach/mach_time.h \
 	ndir.h \
 	netdb.h \
@@ -480,6 +477,7 @@ AC_CHECK_FUNCS([ \
 	inet_ntoa \
 	inet_ntop \
 	isblank \
+	issetugid \
 	memmove \
 	nsleep \
 	pidfile \

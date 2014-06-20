@@ -90,7 +90,9 @@ static void *__THREAD_NAME(_asr);
 
 static struct asr *_asr = NULL;
 
+#ifndef HAVE_ISSETUGID
 #define issetugid() ((getuid() != geteuid()))
+#endif
 
 /* Allocate and configure an async "resolver". */
 void *
