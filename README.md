@@ -24,7 +24,6 @@ Dependencies
 ------------
 
 Portable libasr relies on:
-* [libevent](http://libevent.org/)
 * [openssl](http://www.openssl.org/)
 
 and for the build:
@@ -36,17 +35,14 @@ and for the build:
 Get the source
 --------------
 
-    git clone git://github.com/clongeau/asr.git
+    git clone git://github.com/OpenSMTPD/libasr.git
 
 
 Build
 -----
 
-    cd asr
-    ./bootstrap
     ./configure
     make
-    sudo make install
 
 
 ### Special notes for FreeBSD/DragonFlyBSD/Mac OS X:
