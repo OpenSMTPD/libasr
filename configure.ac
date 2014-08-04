@@ -1567,7 +1567,7 @@ AC_CHECK_TYPES([struct timespec])
 if test "x$ac_cv_have_int64_t" = "xno" && \
 	test "x$ac_cv_sizeof_long_int" != "x8" && \
 	test "x$ac_cv_sizeof_long_long_int" = "x0" ; then
-	echo "OpenSMTPD requires int64_t support.  Contact your vendor or install"
+	echo "libasr requires int64_t support.  Contact your vendor or install"
 	echo "an alternative compiler (I.E., GCC) before continuing."
 	echo ""
 	exit 1;
@@ -1907,48 +1907,6 @@ fi
 AC_SUBST([mansubdir])
 #l4207
 
-#l4432 (customized s/pid/sock/)
-# Whether to enable BSD auth support
-BSD_AUTH_MSG=no
-AC_ARG_WITH([bsd-auth],
-	[  --with-bsd-auth         Enable BSD auth support],
-	[
-		if test "x$withval" != "xno" ; then
-			AC_DEFINE([BSD_AUTH], [1],
-				[Define if you have BSD auth support])
-			BSD_AUTH_MSG=yes
-		fi
-	]
-)
-
-# Where to place smtpd.sock
-sockdir=/var/run
-# make sure the directory exists
-if test ! -d $sockdir ; then
-	sockdir=`eval echo ${sysconfdir}`
-	case $sockdir in
-		NONE/*) sockdir=`echo $sockdir | sed "s~NONE~$ac_default_prefix~"` ;;
-	esac
-fi
-
-AC_ARG_WITH([sock-dir],
-	[  --with-sock-dir=PATH    Specify location of smtpd.sock file],
-	[
-		if test -n "$withval"  &&  test "x$withval" != "xno"  &&  \
-		    test "x${withval}" != "xyes"; then
-			sockdir=$withval
-			if test ! -d $sockdir ; then
-			AC_MSG_WARN([** no $sockdir directory on this system **])
-			fi
-		fi
-	]
-)
-
-AC_DEFINE_UNQUOTED([SMTPD_SOCKDIR], ["$sockdir"], 
-	[Specify location of smtpd.sock])
-AC_SUBST([sockdir])
-#l4470
-
 
 CA_FILE=/etc/ssl/cert.pem
 AC_ARG_WITH([ca-file],
@@ -1962,140 +1920,6 @@ AC_ARG_WITH([ca-file],
 )
 AC_SUBST([CA_FILE])
 
-
-# Where to place spooler
-spooldir=/var/spool/smtpd
-AC_ARG_WITH([spooldir],
-	[  --with-spooldir=PATH		Specify location of spooler directory],
-	[
-		if test -n "$withval"  &&  test "x$withval" != "xno"  &&  \
-		    test "x${withval}" != "xyes"; then
-			spooldir=$withval
-			if test ! -d $spooldir ; then
-			AC_MSG_WARN([** no $spooldir directory on this system **])
-			fi
-		fi
-	]
-)
-
-AC_DEFINE_UNQUOTED([PATH_SPOOL], ["$spooldir"], 
-	[Specify location of spooler])
-AC_SUBST([spooldir])
-
-
-
-
-# Whether to enable *experimental* LDAP support
-EXPERIMENTAL_LDAP=no
-AC_ARG_WITH([experimental-ldap],
-	[  --with-experimental-ldap	Enable experimental LDAP support],
-	[
-		if test "x$withval" != "xno" ; then
-			AC_DEFINE([HAVE_LDAP], [1],
-				[Define if you have experimental LDAP support])
-			EXPERIMENTAL_LDAP=yes
-		fi
-	]
-)
-AM_CONDITIONAL([HAVE_LDAP], [test $EXPERIMENTAL_LDAP = yes])
-
-# Whether to enable *experimental* MySQL support
-EXPERIMENTAL_MYSQL=no
-AC_ARG_WITH([experimental-mysql],
-	[  --with-experimental-mysql	Enable experimental MySQL support],
-	[
-		if test "x$withval" != "xno" ; then
-			AC_DEFINE([HAVE_MYSQL], [1],
-				[Define if you have experimental MySQL support])
-			EXPERIMENTAL_MYSQL=yes
-		fi
-	]
-)
-AM_CONDITIONAL([HAVE_MYSQL], [test $EXPERIMENTAL_MYSQL = yes])
-
-# Whether to enable *experimental* PostgreSQL support
-EXPERIMENTAL_POSTGRES=no
-AC_ARG_WITH([experimental-postgres],
-	[  --with-experimental-postgres	Enable experimental PostgreSQL support],
-	[
-		if test "x$withval" != "xno" ; then
-			AC_DEFINE([HAVE_POSTGRES], [1],
-				[Define if you have experimental PostgreSQL support])
-			EXPERIMENTAL_POSTGRES=yes
-		fi
-	]
-)
-AM_CONDITIONAL([HAVE_POSTGRES], [test $EXPERIMENTAL_POSTGRES = yes])
-
-# Whether to enable *experimental* SQLite support
-EXPERIMENTAL_SQLITE=no
-AC_ARG_WITH([experimental-sqlite],
-	[  --with-experimental-sqlite	Enable experimental SQLite support],
-	[
-		if test "x$withval" != "xno" ; then
-			AC_DEFINE([HAVE_SQLITE], [1],
-				[Define if you have experimental SQLite support])
-				AC_CHECK_HEADER([sqlite3.h],
-						[AC_DEFINE([HAVE_SQLITE3_H], [], [if you have the <sqlite3.h> header file]) ],
-						[AC_MSG_ERROR([*** sqlite3.h missing - please install first or check config.log ***])]
-						)
-
-				save_LIBS="$LIBS"
-				saved_CPPFLAGS="$CPPFLAGS"
-				saved_LDFLAGS="$LDFLAGS"
-				AC_CHECK_LIB([sqlite3], [sqlite3_open], ,
-					[
-						dnl Check default sqlite install dir
-						if test -n "${need_dash_r}"; then
-							LDFLAGS="-L/usr/local/lib -R/usr/local/lib ${saved_LDFLAGS}"
-						else
-							LDFLAGS="-L/usr/local/lib ${saved_LDFLAGS}"
-						fi
-						CPPFLAGS="-I/usr/local/include ${saved_CPPFLAGS}"
-						LIBS="$LIBS -lsqlite3"
-						AC_TRY_LINK_FUNC([sqlite3_open], [AC_DEFINE([HAVE_LIBSQLITE3])],
-							[
-							AC_MSG_ERROR([*** sqlite3 missing - please install first or check config.log ***])
-							]
-						)
-					]
-				)
-				CPPFLAGS="$saved_CPPFLAGS"
-				LDFLAGS="$saved_LDFLAGS"
-				LIBS="$save_LIBS"
-			EXPERIMENTAL_SQLITE=yes
-		fi
-	]
-)
-AM_CONDITIONAL([HAVE_SQLITE], [test $EXPERIMENTAL_SQLITE = yes])
-
-# Whether to enable *experimental* Redis support
-EXPERIMENTAL_REDIS=no
-AC_ARG_WITH([experimental-redis],
-	[  --with-experimental-redis	Enable experimental Redis support],
-	[
-		if test "x$withval" != "xno" ; then
-			AC_DEFINE([HAVE_REDIS], [1],
-				[Define if you have experimental Redis support])
-			EXPERIMENTAL_REDIS=yes
-		fi
-	]
-)
-AM_CONDITIONAL([HAVE_REDIS], [test $EXPERIMENTAL_REDIS = yes])
-
-# Whether to enable *experimental* Redis support
-EXPERIMENTAL_SOCKETMAP=no
-AC_ARG_WITH([experimental-socketmap],
-	[  --with-experimental-socketmap	Enable experimental socketmap support],
-	[
-		if test "x$withval" != "xno" ; then
-			AC_DEFINE([HAVE_SOCKETMAP], [1],
-				[Define if you have experimental socketmap support])
-			EXPERIMENTAL_SOCKETMAP=yes
-		fi
-	]
-)
-AM_CONDITIONAL([HAVE_SOCKETMAP], [test $EXPERIMENTAL_SOCKETMAP = yes])
 
 
 dnl AC_DEFINE([_GNU_SOURCE], [], [Enable GNU Extensions])
@@ -2379,7 +2203,7 @@ D=`eval echo ${sysconfdir}` ; D=`eval echo ${D}`
 E=`eval echo ${mandir}/${mansubdir}X` ; E=`eval echo ${E}`
 
 echo ""
-echo "OpenSMTPD has been configured with the following options:"
+echo "libasr has been configured with the following options:"
 echo "                     User binaries: $B"
 echo "                   System binaries: $C"
 echo "               Configuration files: $D"
