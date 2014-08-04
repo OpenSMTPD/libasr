@@ -45,21 +45,12 @@ Build
     make
 
 
-### Special notes for FreeBSD/DragonFlyBSD/Mac OS X:
+### Special notes for Mac OS X:
 
-Please launch configure with special directive about libevent directory:
-
-#### FreeBSD:
-
-    ./configure --with-libevent-dir=/usr/local
-
-#### DragonFlyBSD:
-
-    ./configure --with-libevent-dir=/usr/pkg
+Please launch configure with special directive:
 
 #### Mac OS X:
 
-    ./configure --with-libevent-dir=/opt/local
     make CFLAGS="-DBIND_8_COMPAT=1"
 
 
