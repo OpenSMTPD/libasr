@@ -76,6 +76,6 @@
 
 #include "openbsd-compat.h"
 
-#include "entropy.h"
+/* #include "entropy.h" */
 
 #endif /* INCLUDES_H */
