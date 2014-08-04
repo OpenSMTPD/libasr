@@ -1808,7 +1808,6 @@ echo "                   System binaries: $C"
 echo "               Configuration files: $D"
 echo "                      Manual pages: $E"
 echo "                    Manpage format: $MANTYPE"
-echo "                  BSD Auth support: $BSD_AUTH_MSG"
 
 echo ""
 
