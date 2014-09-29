@@ -780,7 +780,6 @@ asr_ctx_envopts(struct asr_ctx *ac)
 		strlcpy(buf, "options ", sizeof buf);
 		strlcat(buf, e, sizeof buf);
 		s = strlcat(buf, "\n", sizeof buf);
-		s = strlcat(buf, "\n", sizeof buf);
 		if (s < sizeof buf)
 			asr_ctx_parse(ac, buf);
 	}
