@@ -513,6 +513,9 @@ AC_SEARCH_LIBS([clock_gettime], [rt],
 	[AC_DEFINE([HAVE_CLOCK_GETTIME], [1], [Have clock_gettime])])
 #l1719
 
+AC_SEARCH_LIBS([fparseln], [util], [AC_DEFINE([HAVE_FPARSELN], [1],
+        [FreeBSD have fparseln in libutil])])
+
 #l1723
 AC_CHECK_DECL([strsep],
 	[AC_CHECK_FUNCS([strsep])],
