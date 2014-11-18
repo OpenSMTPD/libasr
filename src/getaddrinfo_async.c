@@ -159,6 +159,12 @@ getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
 			break;
 		}
 
+		if (as->as.ai.hostname && as->as.ai.hostname[0] == '\0') {
+			ar->ar_gai_errno = EAI_NODATA;
+			async_set_state(as, ASR_STATE_HALT);
+			break;
+		}
+
 		ai = &as->as.ai.hints;
 
 #ifdef EAI_BADHINTS

@@ -127,6 +127,13 @@ getnetnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 			break;
 		}
 
+		if (as->as_type == ASR_GETNETBYNAME &&
+		    as->as.netnamadr.name[0] == '\0') {
+			ar->ar_h_errno = NO_DATA;
+			async_set_state(as, ASR_STATE_HALT);
+			break;
+		}
+
 		async_set_state(as, ASR_STATE_NEXT_DB);
 		break;
 

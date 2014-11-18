@@ -96,6 +96,12 @@ res_search_async_run(struct asr_query *as, struct asr_result *ar)
 
 	case ASR_STATE_INIT:
 
+		if (as->as.search.name[0] == '\0') {
+			ar->ar_h_errno = NO_DATA;
+			async_set_state(as, ASR_STATE_HALT);
+			break;
+		}
+
 		as->as.search.saved_h_errno = HERRNO_UNSET;
 		async_set_state(as, ASR_STATE_NEXT_DOMAIN);
 		break;
