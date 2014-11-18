@@ -241,11 +241,11 @@ getnetnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 			n->n.n_net = as->as.netnamadr.addr;
 
 		/*
-		 * No address found in the dns packet. The blocking version
-		 * reports this as an error.
+		 * No valid hostname or address found in the dns packet.
+		 * Ignore it.
 		 */
-		if (as->as_type == ASR_GETNETBYNAME && n->n.n_net == 0) {
-			 /* XXX wrong */
+		if ((as->as_type == ASR_GETNETBYNAME && n->n.n_net == 0) ||
+		    n->n.n_name == NULL) {
 			free(n);
 			async_set_state(as, ASR_STATE_NEXT_DB);
 			break;

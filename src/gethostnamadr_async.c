@@ -359,13 +359,12 @@ gethostnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 		}
 
 		/*
-		 * No address found in the dns packet. The blocking version
-		 * reports this as an error.
+		 * No valid hostname or address found in the dns packet.
+		 * Ignore it.
 		 */
 		if ((as->as_type == ASR_GETHOSTBYNAME &&
 		     h->h.h_addr_list[0] == NULL) ||
-		    (as->as_type == ASR_GETHOSTBYADDR &&
-		     h->h.h_name == NULL)) {
+		    h->h.h_name == NULL) {
 			free(h);
 			async_set_state(as, ASR_STATE_NEXT_DB);
 			break;
