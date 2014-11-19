@@ -1,4 +1,4 @@
-/*	$OpenBSD: res_search_async.c,v 1.13 2014/03/26 18:13:15 eric Exp $	*/
+/*	$OpenBSD: res_search_async.c,v 1.14 2014/07/23 21:26:25 eric Exp $	*/
 /*
  * Copyright (c) 2012 Eric Faurot <eric@openbsd.org>
  *
