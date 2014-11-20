@@ -406,6 +406,10 @@ struct winsize {
 # define _PATH_NOLOGIN "/etc/nologin"
 #endif
 
+#ifndef _PATH_NETWORKS
+# define _PATH_NETWORKS "/etc/networks"
+#endif
+
 /* Define this to be the path of the xauth program. */
 #ifdef XAUTH_PATH
 #define _PATH_XAUTH XAUTH_PATH
