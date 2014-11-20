@@ -1707,7 +1707,7 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <netdb.h>
 #include <resolv.h>
 				]], [[
-	res_hnok("google.com");
+	res_hnok("");
 				]])],
 			[AC_MSG_RESULT([yes])
 			 AC_DEFINE([HAVE_RES_HNOK], [1], [Have res_hnok()])],
