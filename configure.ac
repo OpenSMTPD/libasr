@@ -483,7 +483,6 @@ AC_CHECK_FUNCS([ \
 	pidfile \
 	pw_dup \
 	reallocarray \
-	res_hnok \
 	setenv \
 	setlinebuf \
 	setregid \
@@ -1725,7 +1724,7 @@ AC_EXEEXT
 #l4757
 
 ##chl (still based on portable OpenSSH's configure.ac)
-AC_MSG_CHECKING([if inet_net_pton will link])
+AC_MSG_CHECKING([if res_hnok will link])
 AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -1733,13 +1732,14 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <netdb.h>
 #include <resolv.h>
 				]], [[
-	inet_net_pton (0, 0, 0, 0, 0);
+	res_hnok("");
 				]])],
-		    AC_MSG_RESULT([yes]),
+		   [AC_MSG_RESULT([yes])
+		    AC_DEFINE([HAVE_RES_HNOK], [1], [Have res_hnok()])],
 		   [AC_MSG_RESULT([no])
 		    saved_LIBS="$LIBS"
 		    LIBS="$LIBS -lresolv"
-		    AC_MSG_CHECKING([for inet_net_pton in -lresolv])
+		    AC_MSG_CHECKING([for res_hnok in -lresolv])
 		    AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -1747,9 +1747,10 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <netdb.h>
 #include <resolv.h>
 				]], [[
-	inet_net_pton (0, 0, 0, 0, 0);
+	res_hnok("google.com");
 				]])],
-			[AC_MSG_RESULT([yes])],
+			[AC_MSG_RESULT([yes])
+			 AC_DEFINE([HAVE_RES_HNOK], [1], [Have res_hnok()])],
 			[LIBS="$saved_LIBS"
 			 AC_MSG_RESULT([no])])
 		    ])
