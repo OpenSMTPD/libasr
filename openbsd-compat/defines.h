@@ -852,6 +852,19 @@ struct winsize {
 #ifndef CLOCK_MONOTONIC
 #define CLOCK_MONOTONIC -1
 #endif
+
+#ifndef SCOPE_DELIMITER
+# define SCOPE_DELIMITER '%'
+#endif
+
+#ifndef NETDB_INTERNAL
+# define NETDB_INTERNAL -1
+#endif
+
+#ifndef NETDB_SUCCESS
+# define NETDB_SUCCESS -1
+#endif
+
 /* end of chl */
 
 #endif /* _DEFINES_H */
