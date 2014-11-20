@@ -191,4 +191,8 @@ struct passwd *pw_dup(const struct passwd *);
 void *reallocarray(void *, size_t, size_t);
 #endif
 
+#ifndef HAVE_RES_HNOK
+int res_hnok(const char *);
+#endif
+
 #endif /* _OPENBSD_COMPAT_H */
