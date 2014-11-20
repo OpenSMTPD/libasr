@@ -483,6 +483,7 @@ AC_CHECK_FUNCS([ \
 	pidfile \
 	pw_dup \
 	reallocarray \
+	res_hnok \
 	setenv \
 	setlinebuf \
 	setregid \
