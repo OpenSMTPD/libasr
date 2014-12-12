@@ -801,7 +801,7 @@ struct winsize {
 #ifndef AI_MASK
 /* valid flags for addrinfo */
 #define AI_MASK \
-	    (AI_PASSIVE | AI_CANONNAME | AI_NUMERICHOST | AI_NUMERICSERV)
+	    (AI_PASSIVE | AI_CANONNAME | AI_NUMERICHOST | AI_NUMERICSERV | AI_ADDRCONFIG)
 #ifdef AI_FQDN
 #define AI_MASK (AI_MASK | AI_FQDN)
 #endif
