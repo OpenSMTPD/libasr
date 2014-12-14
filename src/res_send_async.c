@@ -509,6 +509,17 @@ tcp_write(struct asr_query *as)
 		as->as_fd = sockaddr_connect(AS_NS_SA(as), SOCK_STREAM);
 		if (as->as_fd == -1)
 			return (-1); /* errno set */
+/*
+ * Some systems (MacOS X) have SO_NOSIGPIPE instead of MSG_NOSIGNAL.
+ * If neither is available the system is probably broken. We might
+ * want to detect this at configure time.
+ */
+#ifdef SO_NOSIGPIPE
+		i = 1;
+		if (setsockopt(as->as_fd, SOL_SOCKET, SO_NOSIGPIPE, (void *)&i,
+		    sizeof(i)) == -1)
+			return (-1); /* errno set */
+#endif
 		as->as.dns.datalen = 0; /* bytes sent */
 		return (1);
 	}
@@ -534,9 +545,9 @@ tcp_write(struct asr_query *as)
 	msg.msg_iovlen = i;
 
     send_again:
-/* Mac OS X doesn't have MSG_NOSIGNAL flag. */
+/* See above. */
 #ifndef MSG_NOSIGNAL
-#define MSG_NOSIGNAL SO_NOSIGPIPE
+#define MSG_NOSIGNAL 0
 #endif
 	n = sendmsg(as->as_fd, &msg, MSG_NOSIGNAL);
 	if (n == -1) {
