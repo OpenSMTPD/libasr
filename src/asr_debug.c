@@ -55,6 +55,70 @@ rcodetostr(uint16_t v)
 }
 
 static const char *
+__asr_p_class(int c)
+{
+	switch(c) {
+	case C_IN:	return "IN";
+	case C_CHAOS:	return "CHAOS";
+	case C_HS:	return "HESIOD";
+	case C_ANY:	return "ANY";
+	default:	return "?";
+	}
+};
+
+static const char *
+__asr_p_type(int t)
+{
+	switch(t) {
+	case T_A:	return "A";
+	case T_NS:	return "NS";
+	case T_MD:	return "MD";
+	case T_MF:	return "MF";
+	case T_CNAME	return "CNAME";
+	case T_SOA:	return "SOA";
+	case T_MB:	return "MB";
+	case T_MG:	return "MG";
+	case T_MR:	return "MR";
+	case T_NULL	return "NULL";
+	case T_WKS:	return "WKS";
+	case T_PTR:	return "PTR";
+	case T_HINFO:	return "HINFO";
+	case T_MINFO:	return "MINFO";
+	case T_MX:	return "MX";
+	case T_TXT:	return "TXT";
+	case T_RP:	return "RP";
+	case T_AFSDB:	return "AFSDB";
+	case T_X25:	return "X25";
+	case T_ISDN:	return "ISDN";
+	case T_RT:	return "RT";
+	case T_NSAP:	return "NSAP";
+	case T_NSAP_PTR:return"NSAP_PTR";
+	case T_SIG:	return "SIG";
+	case T_KEY:	return "KEY";
+	case T_PX:	return "PX";
+	case T_GPOS:	return "GPOS";
+	case T_AAAA:	return "AAAA";
+	case T_LOC:	return "LOC";
+	case T_NXT:	return "NXT";
+	case T_EID:	return "EID";
+	case T_NIMLOC:	return "NIMLOC";
+	case T_SRV:	return "SRV";
+	case T_ATMA:	return "ATMA";
+	case T_IXFR:	return "IXFR";
+	case T_AXFR:	return "AXFR";
+	case T_MAILB:	return "MAILB";
+	case T_MAILA:	return "MAILA";
+	case T_UINFO:	return "UINFO";
+	case T_UID:	return "UID";
+	case T_GID:	return "GID";
+	case T_NAPTR:	return "NAPTR";
+	case T_UNSPEC:	return "UNSPEC";
+	case T_ANY:	return "ANY";
+	default:	return "?";
+	}
+}
+
+static const char *
 print_dname(const char *_dname, char *buf, size_t max)
 {
 	return (asr_strdname(_dname, buf, max));
@@ -73,8 +137,8 @@ print_rr(const struct asr_dns_rr *rr, char *buf, size_t max)
 	r = snprintf(buf, max, "%s %u %s %s ",
 	    print_dname(rr->rr_dname, tmp, sizeof tmp),
 	    rr->rr_ttl,
-	    __p_class(rr->rr_class),
-	    __p_type(rr->rr_type));
+	    __asr_p_class(rr->rr_class),
+	    __asr_p_type(rr->rr_type));
 	if (r == -1) {
 		buf[0] = '\0';
 		return (buf);
@@ -139,7 +203,7 @@ print_query(const struct asr_dns_query *q, char *buf, size_t max)
 
 	snprintf(buf, max, "%s	%s %s",
 	    print_dname(q->q_dname, b, sizeof b),
-	    __p_class(q->q_class), __p_type(q->q_type));
+	    __asr_p_class(q->q_class), __asr_p_type(q->q_type));
 
 	return (buf);
 }
