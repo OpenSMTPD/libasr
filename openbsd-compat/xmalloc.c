@@ -15,7 +15,6 @@
 
 #include "includes.h"
 
-#include <err.h>
 #include <limits.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -34,7 +33,7 @@ __xmalloc(size_t size)
 		fatal("xmalloc: zero size");
 	ptr = malloc(size);
 	if (ptr == NULL)
-		err(255, "fatal: xmalloc: out of memory (allocating %lu bytes)", (u_long) size);
+		fatal("xmalloc: out of memory (allocating %lu bytes)", (u_long) size);
 	return ptr;
 }
 
@@ -49,7 +48,7 @@ __xcalloc(size_t nmemb, size_t size)
 		fatal("xcalloc: nmemb * size > SIZE_T_MAX");
 	ptr = calloc(nmemb, size);
 	if (ptr == NULL)
-		err(255, "fatal: xcalloc: out of memory (allocating %lu bytes)",
+		fatal("xcalloc: out of memory (allocating %lu bytes)",
 		    (u_long)(size * nmemb));
 	return ptr;
 }
@@ -69,7 +68,7 @@ __xrealloc(void *ptr, size_t nmemb, size_t size)
 	else
 		new_ptr = realloc(ptr, new_size);
 	if (new_ptr == NULL)
-		err(255, "fatal: xrealloc: out of memory (new_size %lu bytes)",
+		fatal("xrealloc: out of memory (new_size %lu bytes)",
 		    (u_long) new_size);
 	return new_ptr;
 }
