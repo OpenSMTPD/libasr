@@ -47,39 +47,12 @@
 #include <sys/time.h>
 #endif
 
-#ifndef HAVE_CLOSEFROM
-void closefrom(int);
-#endif
-
-#if !defined(HAVE_REALPATH) || defined(BROKEN_REALPATH)
-char *realpath(const char *path, char *resolved);
-#endif 
-
 #ifndef HAVE_STRLCPY
 size_t strlcpy(char *dst, const char *src, size_t size);
 #endif
 
 #ifndef HAVE_STRLCAT
 size_t strlcat(char *dst, const char *src, size_t size);
-#endif
-
-#ifndef HAVE_STRMODE
-void strmode(int mode, char *p);
-#endif
-
-#if !defined(HAVE_MKDTEMP) || defined(HAVE_STRICT_MKSTEMP)
-int mkstemps(char *path, int slen);
-int mkstemp(char *path);
-char *mkdtemp(char *path);
-#endif 
-
-#ifndef HAVE_FMT_SCALED
-#define	FMT_SCALED_STRSIZE	7
-int	fmt_scaled(long long number, char *result);
-#endif
-
-#ifndef HAVE_SCAN_SCALED
-int	scan_scaled(char *, long long *);
 #endif
 
 #ifndef HAVE_INET_NTOP
@@ -89,23 +62,6 @@ const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 #ifndef HAVE_STRSEP
 char *strsep(char **stringp, const char *delim);
 #endif
-
-#if !defined(HAVE_GETOPT) || !defined(HAVE_GETOPT_OPTRESET)
-int BSDgetopt(int argc, char * const *argv, const char *opts);
-char	*BSDoptarg;		/* argument associated with option */
-int	BSDoptind;		/* index into parent argv vector */
-#endif
-
-/* Home grown routines */
-/* #include "bsd-misc.h" */
-/* #include "bsd-setres_id.h" */
-/* #include "bsd-statvfs.h" */
-/* #include "bsd-waitpid.h" */
-/* #include "bsd-poll.h" */
-
-#ifndef HAVE_GETPEEREID
-int getpeereid(int , uid_t *, gid_t *);
-#endif 
 
 #ifdef HAVE_ARC4RANDOM
 # ifndef HAVE_ARC4RANDOM_STIR
@@ -172,19 +128,6 @@ void explicit_bzero(void *p, size_t n);
 #include <stdio.h>
 #include <string.h>
 char * fgetln(FILE *stream, size_t *len);
-#endif
-
-#ifndef HAVE_FPARSELN
-#include <stdio.h>
-char * fparseln(FILE *fp, size_t *size, size_t *lineno, const char str[3], int flags);
-#endif
-
-#ifndef HAVE_PIDFILE
-int pidfile(const char *basename);
-#endif
-
-#ifndef HAVE_PW_DUP
-struct passwd *pw_dup(const struct passwd *);
 #endif
 
 #ifndef HAVE_REALLOCARRAY

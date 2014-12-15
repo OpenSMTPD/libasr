@@ -10,6 +10,7 @@ libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/log.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/res_hnok.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strlcat.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strlcpy.c
+libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strsep.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strtonum.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/xmalloc.c
 

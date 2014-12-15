@@ -380,7 +380,7 @@ dnl Checks for header files.
 AC_CHECK_FUNC([setsockopt], , [AC_CHECK_LIB([socket], [setsockopt])])
 #l1082
 
-#l1225 (slightly customized around fmt_scaled scan_scaled checks)
+#l1225
 dnl UnixWare 2.x
 AC_CHECK_FUNC([strcasecmp],
 	[], [ AC_CHECK_LIB([resolv], [strcasecmp], [LIBS="$LIBS -lresolv"]) ]
@@ -389,13 +389,6 @@ AC_CHECK_FUNCS([utimes],
 	[], [ AC_CHECK_LIB([c89], [utimes], [AC_DEFINE([HAVE_UTIMES])
 					LIBS="$LIBS -lc89"]) ]
 )
-
-dnl    Checks for libutil functions
-AC_CHECK_HEADERS([bsd/libutil.h libutil.h])
-AC_SEARCH_LIBS([fmt_scaled], [util bsd])
-AC_SEARCH_LIBS([scan_scaled], [util bsd])
-AC_CHECK_FUNCS([fmt_scaled scan_scaled])
-#l1242
 
 #l1525
 AC_ARG_WITH([pie],
@@ -460,18 +453,11 @@ AC_CHECK_FUNCS([ \
 	__b64_pton \
 	bcopy \
 	chflags \
-	closefrom \
-	dirfd \
-	dirname \
-	endgrent \
 	explicit_bzero \
 	fgetln \
-	fparseln \
 	freeaddrinfo \
 	getaddrinfo \
 	getnameinfo \
-	getopt \
-	getpeereid \
 	getspnam \
 	inet_aton \
 	inet_ntoa \
@@ -479,30 +465,15 @@ AC_CHECK_FUNCS([ \
 	isblank \
 	issetugid \
 	memmove \
-	nsleep \
-	pidfile \
-	pw_dup \
 	reallocarray \
-	setenv \
-	setlinebuf \
-	setregid \
-	setreuid \
-	setsid \
-	sigaction \
-	socketpair \
 	snprintf \
 	strdup \
 	strerror \
 	strlcat \
 	strlcpy \
-	strmode \
 	strtonum \
-	sysconf \
-	tcgetpgrp \
-	truncate \
 	vasprintf \
 	vsnprintf \
-	waitpid \
 ])
 #l1685
 
@@ -513,9 +484,6 @@ AC_SEARCH_LIBS([nanosleep], [rt posix4], [AC_DEFINE([HAVE_NANOSLEEP], [1],
 AC_SEARCH_LIBS([clock_gettime], [rt],
 	[AC_DEFINE([HAVE_CLOCK_GETTIME], [1], [Have clock_gettime])])
 #l1719
-
-AC_SEARCH_LIBS([fparseln], [util], [AC_DEFINE([HAVE_FPARSELN], [1],
-        [FreeBSD have fparseln in libutil])])
 
 #l1723
 AC_CHECK_DECL([strsep],
@@ -679,34 +647,6 @@ if test "x$ac_cv_func_getpeereid" != "xyes" -a "x$ac_cv_func_getpeerucred" != "x
 		NO_PEERCHECK=1
         ])
 fi
-
-dnl see whether mkstemp() requires XXXXXX
-if test "x$ac_cv_func_mkdtemp" = "xyes" ; then
-AC_MSG_CHECKING([for (overly) strict mkstemp])
-AC_RUN_IFELSE(
-	[AC_LANG_PROGRAM([[
-#include <stdlib.h>
-	]], [[
-	char template[]="conftest.mkstemp-test";
-	if (mkstemp(template) == -1)
-		exit(1);
-	unlink(template);
-	exit(0);
-	]])],
-	[
-		AC_MSG_RESULT([no])
-	],
-	[
-		AC_MSG_RESULT([yes])
-		AC_DEFINE([HAVE_STRICT_MKSTEMP], [1], [Silly mkstemp()])
-	],
-	[
-		AC_MSG_RESULT([yes])
-		AC_DEFINE([HAVE_STRICT_MKSTEMP])
-	]
-)
-fi
-#l1982
 
 #l2030
 if test "x$ac_cv_func_getaddrinfo" = "xyes" && \

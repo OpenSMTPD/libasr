@@ -578,21 +578,6 @@ struct winsize {
 # define HAVE_GETADDRINFO
 #endif
 
-#ifndef HAVE_GETOPT_OPTRESET
-# undef getopt
-# undef opterr
-# undef optind
-# undef optopt
-# undef optreset
-# undef optarg
-# define getopt(ac, av, o)  BSDgetopt(ac, av, o)
-# define opterr             BSDopterr
-# define optind             BSDoptind
-# define optopt             BSDoptopt
-# define optreset           BSDoptreset
-# define optarg             BSDoptarg
-#endif
-
 #if defined(BROKEN_GETADDRINFO) && defined(HAVE_GETADDRINFO)
 # undef HAVE_GETADDRINFO
 #endif
@@ -629,25 +614,6 @@ struct winsize {
 #  define __func__ __FUNCTION__
 #elif !defined(HAVE___func__)
 #  define __func__ ""
-#endif
-
-#if defined(KRB5) && !defined(HEIMDAL)
-#  define krb5_get_err_text(context,code) error_message(code)
-#endif
-
-#if defined(SKEYCHALLENGE_4ARG)
-# define _compat_skeychallenge(a,b,c,d) skeychallenge(a,b,c,d)
-#else
-# define _compat_skeychallenge(a,b,c,d) skeychallenge(a,b,c)
-#endif
-
-/* Maximum number of file descriptors available */
-#ifndef OPEN_MAX
-# ifdef HAVE_SYSCONF
-#  define OPEN_MAX	sysconf(_SC_OPEN_MAX)
-# else
-#  define OPEN_MAX	256
-# endif
 #endif
 
 /*

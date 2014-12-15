@@ -1,9 +1,7 @@
 List of files and where they come from
 
-basename.c		portable openssh
 clock_gettime.c		handmade
 defines.h		portable openssh
-dirname.c		portable openssh
 fgetln.c		part of /usr/src/usr.bin/make/util.c
 includes.h		portable openssh
 log.h			portable openssh
