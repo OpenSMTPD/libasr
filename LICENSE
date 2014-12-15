@@ -223,13 +223,7 @@ Portable OpenSSH.
      * called by a name other than "ssh" or "Secure Shell".
 
 
-7) chacha_private.h
-
-D. J. Bernstein
-Public domain.
-
-
-8) bootstrap (only there in the git repository)
+7) bootstrap (only there in the git repository)
 
      # Copyright (c) 2002-2011 Sam Hocevar <sam@hocevar.net>
      #
