@@ -195,4 +195,8 @@ void *reallocarray(void *, size_t, size_t);
 int res_hnok(const char *);
 #endif
 
+#ifndef HAVE_CLOCK_GETTIME
+int clock_gettime(int, struct timespec *);
+#endif
+
 #endif /* _OPENBSD_COMPAT_H */
