@@ -24,7 +24,6 @@
 #include <netdb.h>
 
 #include <asr.h>
-#include <err.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>

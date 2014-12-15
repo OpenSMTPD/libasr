@@ -32,7 +32,6 @@
 #include <netdb.h>
 
 #include <asr.h>
-#include <err.h>
 #include <errno.h>
 #include <ifaddrs.h>
 #include <resolv.h> /* for res_hnok */

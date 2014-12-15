@@ -25,7 +25,6 @@
 #include <netdb.h>
 
 #include <asr.h>
-#include <err.h>
 #include <errno.h>
 #include <resolv.h> /* for res_hnok */
 #include <stdlib.h>
