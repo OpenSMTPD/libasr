@@ -74,12 +74,12 @@ __asr_p_type(int t)
 	case T_NS:	return "NS";
 	case T_MD:	return "MD";
 	case T_MF:	return "MF";
-	case T_CNAME	return "CNAME";
+	case T_CNAME:	return "CNAME";
 	case T_SOA:	return "SOA";
 	case T_MB:	return "MB";
 	case T_MG:	return "MG";
 	case T_MR:	return "MR";
-	case T_NULL	return "NULL";
+	case T_NULL:	return "NULL";
 	case T_WKS:	return "WKS";
 	case T_PTR:	return "PTR";
 	case T_HINFO:	return "HINFO";
@@ -108,11 +108,19 @@ __asr_p_type(int t)
 	case T_AXFR:	return "AXFR";
 	case T_MAILB:	return "MAILB";
 	case T_MAILA:	return "MAILA";
+#ifdef T_UINFO
 	case T_UINFO:	return "UINFO";
+#endif
+#ifdef T_UID
 	case T_UID:	return "UID";
+#endif
+#ifdef T_GID
 	case T_GID:	return "GID";
+#endif
 	case T_NAPTR:	return "NAPTR";
+#ifdef T_UNSPEC
 	case T_UNSPEC:	return "UNSPEC";
+#endif
 	case T_ANY:	return "ANY";
 	default:	return "?";
 	}
