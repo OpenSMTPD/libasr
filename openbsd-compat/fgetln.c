@@ -33,7 +33,7 @@
 
 #ifndef HAVE_FGETLN
 
-#include "xmalloc.h"
+#include <stdlib.h>
 
 char *
 fgetln(stream, len)
@@ -42,16 +42,24 @@ fgetln(stream, len)
 {
     static char *buffer = NULL;
     static size_t buflen = 0;
+    char *tmp;
 
     if (buflen == 0) {
 	buflen = 512;
-	buffer = __xmalloc(buflen+1);
+	buffer = malloc(buflen+1);
+	if (buffer == NULL)
+	  return NULL;
     }
     if (fgets(buffer, buflen+1, stream) == NULL)
 	return NULL;
     *len = strlen(buffer);
     while (*len == buflen && buffer[*len-1] != '\n') {
-	buffer = __xrealloc(buffer, 1, 2*buflen + 1);
+	tmp = realloc(buffer, 2*buflen + 1);
+	if (tmp == NULL) {
+	  free(buffer);
+	  return NULL;
+	}
+	buffer = tmp;
 	if (fgets(buffer + buflen, buflen + 1, stream) == NULL)
 	    return NULL;
 	*len += strlen(buffer + buflen);
