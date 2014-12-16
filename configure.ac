@@ -1715,8 +1715,3 @@ echo "      Linker flags: ${LDFLAGS}"
 echo "         Libraries: ${LIBS}"
 
 echo ""
-
-if test "x$MAKE_PACKAGE_SUPPORTED" = "xyes" ; then
-	echo "SVR4 style packages are supported with \"make package\""
-	echo ""
-fi
