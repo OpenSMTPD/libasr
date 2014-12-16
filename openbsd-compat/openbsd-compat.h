@@ -37,7 +37,6 @@
 #include <netinet/in.h>
 
 /* OpenBSD function replacements */
-/* #include "base64.h" */
 
 #include <sys/queue.h>
 #include <sys/tree.h>
@@ -60,23 +59,6 @@ const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 
 #ifndef HAVE_STRSEP
 char *strsep(char **stringp, const char *delim);
-#endif
-
-#ifdef HAVE_ARC4RANDOM
-# ifndef HAVE_ARC4RANDOM_STIR
-#  define arc4random_stir()
-# endif
-#else
-unsigned int arc4random(void);
-void arc4random_stir(void);
-#endif /* !HAVE_ARC4RANDOM */
-
-#ifndef HAVE_ARC4RANDOM_BUF
-void arc4random_buf(void *, size_t);
-#endif
-
-#ifndef HAVE_ARC4RANDOM_UNIFORM
-u_int32_t arc4random_uniform(u_int32_t);
 #endif
 
 #ifndef HAVE_ASPRINTF
