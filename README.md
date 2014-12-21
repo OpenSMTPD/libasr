@@ -42,9 +42,9 @@ You can get the latest sources from github:
 
     git clone git://github.com/OpenSMTPD/libasr.git
 
-tarballs for development snapshots and official releases are available at:
+Tarballs for development snapshots and official releases are available at:
 
-    http://www.opensmtpd.org/archives/
+http://www.opensmtpd.org/archives/
 
 
 Build
@@ -66,7 +66,7 @@ Documentation
 
 For documentation, please refer to the OpenBSD manpages:
 
-* http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man3/asr_run.3
+http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man3/asr_run.3
 
 Note that unlike the native OpenBSD implementation, this version is not
 thread-safe (yet).
