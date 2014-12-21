@@ -5,9 +5,9 @@ libasr is a free, simple and portable asynchronous resolver library.
 
 It allows to run dns queries and perform hostname resolutions in a fully
 asynchronous fashion.  The implementation is thread-less, fork-less, and
-does not make use of signals or other "tricks" that may get in the deve-
-loper's way.  The API was initially developped for the OpenBSD operating
-system, where it is natively supported.
+does not make use of signals or other "tricks" that might get in the
+developer's way.  The API was initially developped for the OpenBSD
+operating system, where it is natively supported.
 
 This library is intended to bring this interface to other systems. It is
 originally provided as a support library for the portable version of the
