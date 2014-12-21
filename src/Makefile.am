@@ -18,6 +18,6 @@ libasr_la_CPPFLAGS =	-I$(top_srcdir)/src -I$(top_srcdir)/openbsd-compat
 
 libasr_la_CFLAGS=	-DASR_OPT_THREADSAFE=0
 
-libasr_la_LDFLAGS=	-release 0.9.0 -version-info 0:0:0
+libasr_la_LDFLAGS=	-version-info 0:0:0
 
 EXTRA_DIST =		asr_private.h
