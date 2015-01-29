@@ -219,6 +219,8 @@ getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
 			for (ifa = ifa0; ifa != NULL; ifa = ifa->ifa_next) {
 				if (ifa->ifa_flags & IFF_LOOPBACK)
 					continue;
+				if (ifa->ifa_addr == NULL)
+					continue;
 				if (ifa->ifa_addr->sa_family == PF_INET)
 					v4 = 1;
 				else if (ifa->ifa_addr->sa_family == PF_INET6 &&
