@@ -284,12 +284,12 @@ static struct netent_ext *
 netent_file_match(FILE *f, int reqtype, const char *data)
 {
 	struct netent_ext	*e;
-	char			*tokens[MAXTOKEN];
+	char			*tokens[MAXTOKEN], buf[ASR_BUFSIZ + 1];
 	int			 n, i;
 	in_addr_t		 net;
 
 	for (;;) {
-		n = asr_parse_namedb_line(f, tokens, MAXTOKEN);
+		n = asr_parse_namedb_line(f, tokens, MAXTOKEN, buf, sizeof(buf));
 		if (n == -1) {
 			errno = 0; /* ignore errors reading the file */
 			return (NULL);

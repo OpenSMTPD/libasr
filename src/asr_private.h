@@ -17,6 +17,8 @@
 
 #include <stdio.h>
 
+#define ASR_BUFSIZ	1024
+
 #define QR_MASK		(0x1 << 15)
 #define OPCODE_MASK	(0xf << 11)
 #define AA_MASK		(0x1 << 10)
@@ -318,7 +320,7 @@ void asr_async_free(struct asr_query *);
 size_t asr_make_fqdn(const char *, const char *, char *, size_t);
 char *asr_strdname(const char *, char *, size_t);
 int asr_iter_db(struct asr_query *);
-int asr_parse_namedb_line(FILE *, char **, int);
+int asr_parse_namedb_line(FILE *, char **, int, char *, size_t);
 char *asr_hostalias(struct asr_ctx *, const char *, char *, size_t);
 
 /* *_async.c */

@@ -786,7 +786,7 @@ asr_freeaddrinfo(struct addrinfo *ai)
 static int
 addrinfo_from_file(struct asr_query *as, int family, FILE *f)
 {
-	char		*tokens[MAXTOKEN], *c;
+	char		*tokens[MAXTOKEN], *c, buf[ASR_BUFSIZ + 1];
 	int		 n, i;
 	union {
 		struct sockaddr		sa;
@@ -795,7 +795,7 @@ addrinfo_from_file(struct asr_query *as, int family, FILE *f)
 	} u;
 
 	for (;;) {
-		n = asr_parse_namedb_line(f, tokens, MAXTOKEN);
+		n = asr_parse_namedb_line(f, tokens, MAXTOKEN, buf, sizeof(buf));
 		if (n == -1)
 			break; /* ignore errors reading the file */
 
