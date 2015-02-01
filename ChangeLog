@@ -1,3 +1,8 @@
+libasr 1.0.1  (2015/02/02)
+--------------------------
+* Fix potential off-by-one when parsing /etc/hosts
+* Fix possible NULL-deref when iterating on getifaddrs() result
+
 libasr 1.0.0  (2014/12/21)
 --------------------------
 * First public release
