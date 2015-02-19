@@ -20,4 +20,20 @@ libasr_la_CFLAGS=	-DASR_OPT_THREADSAFE=0
 
 libasr_la_LDFLAGS=	-version-info 0:1:0
 
-EXTRA_DIST =		asr_private.h
+libasr_MANPAGES=	asr_run.3.out
+libasr_MANPAGES_IN=	asr_run.3
+
+EXTRA_DIST =		asr_private.h $(libasr_MANPAGES_IN)
+
+$(libasr_MANPAGES): $(libasr_MANPAGES_IN)
+	manpage=`echo $@ | sed 's/\.out$$//'`; \
+	if test "$(MANTYPE)" = "man"; then \
+		$(FIXPATHSCMD) $${manpage} | $(AWK) -f $(top_srcdir)/mk/mdoc2man.awk > $@; \
+	else \
+		$(FIXPATHSCMD) $${manpage} > $@; \
+	fi
+
+install-exec-hook: $(libasr_MANPAGES)
+	$(MKDIR_P) $(DESTDIR)$(mandir)/$(mansubdir)3
+	$(INSTALL) -m 644 asr_run.3.out		$(DESTDIR)$(mandir)/$(mansubdir)3/asr_run.3
+	rm	asr_run.3.out
