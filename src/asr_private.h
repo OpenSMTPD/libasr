@@ -163,6 +163,8 @@ struct asr {
 
 #define	ASYNC_EXTOBUF		0x00002000
 
+#define	ASYNC_NO_INET		0x00010000
+#define	ASYNC_NO_INET6		0x00020000
 
 struct asr_query {
 	int		(*as_run)(struct asr_query *, struct asr_result *);
