@@ -217,16 +217,26 @@ getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
 
 			as->as.ai.flags |= ASYNC_NO_INET | ASYNC_NO_INET6;
 			for (ifa = ifa0; ifa != NULL; ifa = ifa->ifa_next) {
-				if (ifa->ifa_flags & IFF_LOOPBACK)
-					continue;
 				if (ifa->ifa_addr == NULL)
 					continue;
-				if (ifa->ifa_addr->sa_family == PF_INET)
+				if (ifa->ifa_addr->sa_family == PF_INET) {
+					if (((struct sockaddr_in *)
+						ifa->ifa_addr)->sin_addr.s_addr
+					    & INADDR_LOOPBACK)
+						continue;
 					as->as.ai.flags &= ~ASYNC_NO_INET;
-				else if (ifa->ifa_addr->sa_family == PF_INET6 &&
-				    !IN6_IS_ADDR_LINKLOCAL(&((struct
-				    sockaddr_in6 *)ifa->ifa_addr)->sin6_addr))
+				}
+				else if (ifa->ifa_addr->sa_family == PF_INET6) {
+					if (IN6_IS_ADDR_LOOPBACK(&((struct
+							sockaddr_in6 *)
+						    ifa->ifa_addr)->sin6_addr))
+						continue;
+					if (IN6_IS_ADDR_LINKLOCAL(&((struct
+							sockaddr_in6 *)
+						    ifa->ifa_addr)->sin6_addr))
+						continue;
 					as->as.ai.flags &= ~ASYNC_NO_INET6;
+				}
 			}
 			freeifaddrs(ifa0);
 		}
