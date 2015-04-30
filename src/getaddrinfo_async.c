@@ -222,7 +222,7 @@ getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
 				if (ifa->ifa_addr->sa_family == PF_INET) {
 					if (((struct sockaddr_in *)
 						ifa->ifa_addr)->sin_addr.s_addr
-					    & INADDR_LOOPBACK)
+					    == INADDR_LOOPBACK)
 						continue;
 					as->as.ai.flags &= ~ASYNC_NO_INET;
 				}
