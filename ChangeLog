@@ -1,3 +1,10 @@
+libasr 1.0.2  (????/??/??)
+--------------------------
+* Make AI_ADDRCONFIG filter on loopback address instead of loopback interface
+* Limit AI_ADDRCONFIG effects to DNS queries
+* Install manpages
+* Allow more aliases and addrs for gethostby*_async() and ignore extra entries
+
 libasr 1.0.1  (2015/02/02)
 --------------------------
 * Fix potential off-by-one when parsing /etc/hosts
