@@ -28,9 +28,9 @@ EXTRA_DIST =		asr_private.h $(libasr_MANPAGES_IN)
 $(libasr_MANPAGES): $(libasr_MANPAGES_IN)
 	manpage=`echo $@ | sed 's/\.out$$//'`; \
 	if test "$(MANTYPE)" = "man"; then \
-		$(FIXPATHSCMD) $${manpage} | $(AWK) -f $(top_srcdir)/mk/mdoc2man.awk > $@; \
+		$(CAT) $${manpage} | $(AWK) -f $(top_srcdir)/mk/mdoc2man.awk > $@; \
 	else \
-		$(FIXPATHSCMD) $${manpage} > $@; \
+		$(CAT) $${manpage} > $@; \
 	fi
 
 install-exec-hook: $(libasr_MANPAGES)
