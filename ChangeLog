@@ -1,4 +1,4 @@
-libasr 1.0.2  (????/??/??)
+libasr 1.0.2  (2015/06/03)
 --------------------------
 * Make AI_ADDRCONFIG filter on loopback address instead of loopback interface
 * Limit AI_ADDRCONFIG effects to DNS queries
