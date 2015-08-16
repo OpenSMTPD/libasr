@@ -882,7 +882,7 @@ addrconfig_setup(struct asr_query *as)
 		case PF_INET:
 			sinp = (struct sockaddr_in *)ifa->ifa_addr;
 
-			if (sinp->sin_addr.s_addr == INADDR_LOOPBACK)
+			if (sinp->sin_addr.s_addr == htonl(INADDR_LOOPBACK))
 				continue;
 
 			as->as.ai.flags &= ~ASYNC_NO_INET;
