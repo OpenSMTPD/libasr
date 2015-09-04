@@ -57,7 +57,7 @@ res_mkquery(int op, const char *dname, int class, int type,
 	ac = asr_use_resolver(NULL);
 
 	memset(&h, 0, sizeof h);
-	h.id = res_randomid();
+	h.id = arc4random();
 	if (ac->ac_options & RES_RECURSE)
 		h.flags |= RD_MASK;
 	h.qdcount = 1;
