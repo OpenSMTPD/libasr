@@ -8,6 +8,7 @@ libasr_la_SOURCES =	asr.c asr_debug.c asr_utils.c getaddrinfo_async.c	\
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/arc4random.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/fgetln.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/res_hnok.c
+libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/res_random.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strlcat.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strlcpy.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strsep.c

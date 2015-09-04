@@ -380,7 +380,7 @@ setup_query(struct asr_query *as, const char *name, const char *dom,
 	as->as.dns.obuflen = 0;
 
 	memset(&h, 0, sizeof h);
-	h.id = arc4random();
+	h.id = res_randomid();
 	if (as->as_ctx->ac_options & RES_RECURSE)
 		h.flags |= RD_MASK;
 	h.qdcount = 1;

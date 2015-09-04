@@ -6,6 +6,7 @@ defines.h		portable openssh
 fgetln.c		part of /usr/src/usr.bin/make/util.c
 includes.h		portable openssh
 openbsd-compat.h	portable openssh
+res_random.c		src/lib/libc/net/res_random.c
 strlcat.c		portable openssh
 strlcpy.c		portable openssh
 strtonum.c		portable openssh

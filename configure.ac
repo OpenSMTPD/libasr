@@ -460,6 +460,7 @@ AC_CHECK_FUNCS([ \
 	issetugid \
 	memmove \
 	reallocarray \
+	res_randomid \
 	snprintf \
 	strdup \
 	strerror \

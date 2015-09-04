@@ -82,6 +82,10 @@ void arc4random_buf(void *, size_t);
 u_int32_t arc4random_uniform(u_int32_t);
 #endif
 
+#ifndef HAVE_RES_RANDOMID
+u_int res_randomid(void);
+#endif
+
 /* #include <sys/types.h> XXX needed? For size_t */
 
 #ifndef HAVE_SNPRINTF
