@@ -20,7 +20,7 @@ libasr_la_CPPFLAGS =	-I$(top_srcdir)/src -I$(top_srcdir)/openbsd-compat
 
 libasr_la_CFLAGS=	-DASR_OPT_THREADSAFE=0
 
-libasr_la_LDFLAGS=	-version-info 0:2:0
+libasr_la_LDFLAGS=	-version-info 0:2:0 -lcrypto
 
 libasr_MANPAGES=	asr_run.3.out
 libasr_MANPAGES_IN=	asr_run.3
