@@ -26,6 +26,7 @@
 
 #include "includes.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -35,8 +36,6 @@
 
 #include <openssl/rand.h>
 #include <openssl/err.h>
-
-#include "log.h"
 
 #define KEYSTREAM_ONLY
 #include "chacha_private.h"
@@ -78,9 +77,12 @@ _rs_stir(void)
 {
 	u_char rnd[KEYSZ + IVSZ];
 
-	if (RAND_bytes(rnd, sizeof(rnd)) <= 0)
-		fatal("Couldn't obtain random bytes (error %ld)",
+	if (RAND_bytes(rnd, sizeof(rnd)) <= 0) {
+		fprintf(stderr,
+		    "libasr: Couldn't obtain random bytes (error %ld)",
 		    ERR_get_error());
+		exit(1);
+	}
 
 	if (!rs_initialized) {
 		rs_initialized = 1;
