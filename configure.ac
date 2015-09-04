@@ -41,7 +41,7 @@ AC_PATH_PROG([NROFF], [nroff])
 AC_PATH_PROG([MANDOC], [mandoc])
 AC_PROG_YACC
 
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 
 LT_INIT
 
@@ -460,7 +460,6 @@ AC_CHECK_FUNCS([ \
 	issetugid \
 	memmove \
 	reallocarray \
-	res_randomid \
 	snprintf \
 	strdup \
 	strerror \
@@ -470,6 +469,13 @@ AC_CHECK_FUNCS([ \
 	vasprintf \
 	vsnprintf \
 ])
+
+AC_CHECK_FUNC([res_randomid],
+	[AC_DEFINE([HAVE_RES_RANDOMID], [1], [Define if res_randomid exists])])
+AM_CONDITIONAL([USE_OPENBSD_RES_RANDOM], [test "x$HAVE_RES_RANDOMID" = "x" ])
+AM_COND_IF([USE_OPENBSD_RES_RANDOM],
+	[AC_CHECK_LIB([crypto], [RAND_bytes], [], [AC_MSG_ERROR([libcrypto not found])])])
+
 #l1685
 
 #l1715
