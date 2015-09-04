@@ -5,6 +5,7 @@ libasr_la_SOURCES =	asr.c asr_debug.c asr_utils.c getaddrinfo_async.c	\
 			getnetnamadr_async.c res_search_async.c res_send_async.c
 
 #openbsd-compat
+libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/arc4random.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/fgetln.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/res_hnok.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strlcat.c
