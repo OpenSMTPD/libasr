@@ -832,7 +832,7 @@ struct winsize {
 #endif
 
 #ifndef NETDB_SUCCESS
-# define NETDB_SUCCESS -1
+# define NETDB_SUCCESS 0
 #endif
 
 /* end of chl */
