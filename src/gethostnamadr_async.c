@@ -248,7 +248,7 @@ gethostnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 
 			/* Try to find a match in the host file */
 
-			if ((f = fopen(as->as_ctx->ac_hostfile, "re")) == NULL)
+			if ((f = fopen(_PATH_HOSTS, "re")) == NULL)
 				break;
 
 			if (as->as_type == ASR_GETHOSTBYNAME) {

@@ -400,7 +400,7 @@ getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
 			break;
 
 		case ASR_DB_FILE:
-			f = fopen(as->as_ctx->ac_hostfile, "re");
+			f = fopen(_PATH_HOSTS, "re");
 			if (f == NULL) {
 				async_set_state(as, ASR_STATE_NEXT_DB);
 				break;

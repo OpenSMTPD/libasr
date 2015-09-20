@@ -376,7 +376,6 @@ _asr_dump_config(FILE *f, struct asr *a)
 	for (i = 0; i < ac->ac_nscount; i++)
 		fprintf(f, "	%s\n", _asr_print_sockaddr(ac->ac_ns[i], buf,
 		    sizeof buf));
-	fprintf(f, "HOSTFILE %s\n", ac->ac_hostfile);
 	fprintf(f, "LOOKUP %s", ac->ac_db);
 	fprintf(f, "\n------------------------------------\n");
 }

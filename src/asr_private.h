@@ -134,8 +134,6 @@ struct asr_ctx {
 	char		 ac_db[ASR_MAXDB + 1];
 	int		 ac_family[3];
 
-	char		*ac_hostfile;
-
 	int		 ac_nscount;
 	int		 ac_nstimeout;
 	int		 ac_nsretries;

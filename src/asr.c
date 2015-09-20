@@ -60,7 +60,6 @@
 #endif
 
 #define DEFAULT_CONFFILE	"/etc/resolv.conf"
-#define DEFAULT_HOSTFILE	"/etc/hosts"
 #define DEFAULT_CONF		"lookup file\n"
 #define DEFAULT_LOOKUP		"lookup bind file"
 
@@ -533,8 +532,6 @@ asr_ctx_create(void)
 	ac->ac_family[1] = AF_INET6;
 #endif
 	ac->ac_family[2] = -1;
-
-	ac->ac_hostfile = DEFAULT_HOSTFILE;
 
 	ac->ac_nscount = 0;
 	ac->ac_nstimeout = 5;
