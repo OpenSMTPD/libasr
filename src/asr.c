@@ -59,7 +59,6 @@
 #include "thread_private.h"
 #endif
 
-#define DEFAULT_CONFFILE	"/etc/resolv.conf"
 #define DEFAULT_CONF		"lookup file\n"
 #define DEFAULT_LOOKUP		"lookup bind file"
 
@@ -117,7 +116,7 @@ _asr_resolver(const char *conf)
 #endif
 
 	if (conf == NULL)
-		conf = DEFAULT_CONFFILE;
+		conf = _PATH_RESCONF;
 
 	if (conf[0] == '!') {
 		/* Use the rest of the string as config file */
