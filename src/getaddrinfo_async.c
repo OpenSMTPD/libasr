@@ -577,23 +577,6 @@ iter_family(struct asr_query *as, int first)
 }
 
 /*
- * Concatenate a name and a domain name. The result has no trailing dot.
- * Return the resulting string length, or 0 in case of error.
- */
-static size_t
-domcat(const char *name, const char *domain, char *buf, size_t buflen)
-{
-	size_t	r;
-
-	r = _asr_make_fqdn(name, domain, buf, buflen);
-	if (r == 0)
-		return (0);
-	buf[r - 1] = '\0';
-
-	return (r - 1);
-}
-
-/*
  * Use the sockaddr at "sa" to extend the result list on the "as" context,
  * with the specified canonical name "cname". This function adds one
  * entry per protocol/socktype match.
