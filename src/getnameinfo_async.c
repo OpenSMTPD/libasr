@@ -44,8 +44,8 @@ getnameinfo_async(const struct sockaddr *sa, socklen_t slen, char *host,
 	struct asr_ctx	 *ac;
 	struct asr_query *as;
 
-	ac = asr_use_resolver(asr);
-	if ((as = asr_async_new(ac, ASR_GETNAMEINFO)) == NULL)
+	ac = _asr_use_resolver(asr);
+	if ((as = _asr_async_new(ac, ASR_GETNAMEINFO)) == NULL)
 		goto abort; /* errno set */
 	as->as_run = getnameinfo_async_run;
 
@@ -63,13 +63,13 @@ getnameinfo_async(const struct sockaddr *sa, socklen_t slen, char *host,
 	as->as.ni.servnamelen = servlen;
 	as->as.ni.flags = flags;
 
-	asr_ctx_unref(ac);
+	_asr_ctx_unref(ac);
 	return (as);
 
     abort:
 	if (as)
-		asr_async_free(as);
-	asr_ctx_unref(ac);
+		_asr_async_free(as);
+	_asr_ctx_unref(ac);
 	return (NULL);
 }
 
@@ -143,7 +143,7 @@ getnameinfo_async_run(struct asr_query *as, struct asr_result *ar)
 		/*
 		 * Create a subquery to lookup the address.
 		 */
-		as->as.ni.subq = gethostbyaddr_async_ctx(addr, addrlen,
+		as->as.ni.subq = _gethostbyaddr_async_ctx(addr, addrlen,
 		    as->as.ni.sa.sa.sa_family,
 		    as->as_ctx);
 		if (as->as.ni.subq == NULL) {

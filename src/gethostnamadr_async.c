@@ -83,8 +83,8 @@ gethostbyname2_async(const char *name, int af, void *asr)
 		return (NULL);
 	}
 
-	ac = asr_use_resolver(asr);
-	if ((as = asr_async_new(ac, ASR_GETHOSTBYNAME)) == NULL)
+	ac = _asr_use_resolver(asr);
+	if ((as = _asr_async_new(ac, ASR_GETHOSTBYNAME)) == NULL)
 		goto abort; /* errno set */
 	as->as_run = gethostnamadr_async_run;
 
@@ -97,13 +97,13 @@ gethostbyname2_async(const char *name, int af, void *asr)
 	if (as->as.hostnamadr.name == NULL)
 		goto abort; /* errno set */
 
-	asr_ctx_unref(ac);
+	_asr_ctx_unref(ac);
 	return (as);
 
     abort:
 	if (as)
-		asr_async_free(as);
-	asr_ctx_unref(ac);
+		_asr_async_free(as);
+	_asr_ctx_unref(ac);
 	return (NULL);
 }
 
@@ -113,20 +113,20 @@ gethostbyaddr_async(const void *addr, socklen_t len, int af, void *asr)
 	struct asr_ctx	 *ac;
 	struct asr_query *as;
 
-	ac = asr_use_resolver(asr);
-	as = gethostbyaddr_async_ctx(addr, len, af, ac);
-	asr_ctx_unref(ac);
+	ac = _asr_use_resolver(asr);
+	as = _gethostbyaddr_async_ctx(addr, len, af, ac);
+	_asr_ctx_unref(ac);
 
 	return (as);
 }
 
 struct asr_query *
-gethostbyaddr_async_ctx(const void *addr, socklen_t len, int af,
+_gethostbyaddr_async_ctx(const void *addr, socklen_t len, int af,
     struct asr_ctx *ac)
 {
 	struct asr_query *as;
 
-	if ((as = asr_async_new(ac, ASR_GETHOSTBYADDR)) == NULL)
+	if ((as = _asr_async_new(ac, ASR_GETHOSTBYADDR)) == NULL)
 		goto abort; /* errno set */
 	as->as_run = gethostnamadr_async_run;
 
@@ -139,7 +139,7 @@ gethostbyaddr_async_ctx(const void *addr, socklen_t len, int af,
 
     abort:
 	if (as)
-		asr_async_free(as);
+		_asr_async_free(as);
 	return (NULL);
 }
 
@@ -209,7 +209,7 @@ gethostnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 
 	case ASR_STATE_NEXT_DB:
 
-		if (asr_iter_db(as) == -1) {
+		if (_asr_iter_db(as) == -1) {
 			async_set_state(as, ASR_STATE_NOT_FOUND);
 			break;
 		}
@@ -223,14 +223,14 @@ gethostnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 			if (as->as_type == ASR_GETHOSTBYNAME) {
 				type = (as->as.hostnamadr.family == AF_INET) ?
 				    T_A : T_AAAA;
-				as->as.hostnamadr.subq = res_search_async_ctx(
+				as->as.hostnamadr.subq = _res_search_async_ctx(
 				    as->as.hostnamadr.name,
 				    C_IN, type, as->as_ctx);
 			} else {
-				asr_addr_as_fqdn(as->as.hostnamadr.addr,
+				_asr_addr_as_fqdn(as->as.hostnamadr.addr,
 				    as->as.hostnamadr.family,
 				    name, sizeof(name));
-				as->as.hostnamadr.subq = res_query_async_ctx(
+				as->as.hostnamadr.subq = _res_query_async_ctx(
 				    name, C_IN, T_PTR, as->as_ctx);
 			}
 
@@ -252,7 +252,7 @@ gethostnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 				break;
 
 			if (as->as_type == ASR_GETHOSTBYNAME) {
-				data = asr_hostalias(as->as_ctx,
+				data = _asr_hostalias(as->as_ctx,
 				    as->as.hostnamadr.name, name, sizeof(name));
 				if (data == NULL)
 					data = as->as.hostnamadr.name;
@@ -286,7 +286,7 @@ gethostnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 			if (as->as.hostnamadr.family != AF_INET)
 				break;
 			if (as->as_type == ASR_GETHOSTBYNAME) {
-				data = asr_hostalias(as->as_ctx,
+				data = _asr_hostalias(as->as_ctx,
 				    as->as.hostnamadr.name, name, sizeof(name));
 				if (data == NULL)
 					data = as->as.hostnamadr.name;
@@ -433,7 +433,7 @@ hostent_file_match(FILE *f, int reqtype, int family, const char *data,
 	int	 n, i;
 
 	for (;;) {
-		n = asr_parse_namedb_line(f, tokens, MAXTOKEN, buf, sizeof(buf));
+		n = _asr_parse_namedb_line(f, tokens, MAXTOKEN, buf, sizeof(buf));
 		if (n == -1) {
 			errno = 0; /* ignore errors reading the file */
 			return (NULL);
@@ -489,14 +489,14 @@ hostent_from_packet(int reqtype, int family, char *pkt, size_t pktlen)
 	if ((h = hostent_alloc(family)) == NULL)
 		return (NULL);
 
-	asr_unpack_init(&p, pkt, pktlen);
-	asr_unpack_header(&p, &hdr);
+	_asr_unpack_init(&p, pkt, pktlen);
+	_asr_unpack_header(&p, &hdr);
 	for (; hdr.qdcount; hdr.qdcount--)
-		asr_unpack_query(&p, &q);
+		_asr_unpack_query(&p, &q);
 	strlcpy(dname, q.q_dname, sizeof(dname));
 
 	for (; hdr.ancount; hdr.ancount--) {
-		asr_unpack_rr(&p, &rr);
+		_asr_unpack_rr(&p, &rr);
 		if (rr.rr_class != C_IN)
 			continue;
 		switch (rr.rr_type) {
@@ -581,7 +581,7 @@ hostent_set_cname(struct hostent_ext *h, const char *name, int isdname)
 		return (-1);
 
 	if (isdname) {
-		asr_strdname(name, buf, sizeof buf);
+		_asr_strdname(name, buf, sizeof buf);
 		buf[strlen(buf) - 1] = '\0';
 		if (!res_hnok(buf))
 			return (-1);
@@ -611,7 +611,7 @@ hostent_add_alias(struct hostent_ext *h, const char *name, int isdname)
 		return (0);
 
 	if (isdname) {
-		asr_strdname(name, buf, sizeof buf);
+		_asr_strdname(name, buf, sizeof buf);
 		buf[strlen(buf)-1] = '\0';
 		if (!res_hnok(buf))
 			return (-1);

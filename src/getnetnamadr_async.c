@@ -61,8 +61,8 @@ getnetbyname_async(const char *name, void *asr)
 		return (NULL);
 	}
 
-	ac = asr_use_resolver(asr);
-	if ((as = asr_async_new(ac, ASR_GETNETBYNAME)) == NULL)
+	ac = _asr_use_resolver(asr);
+	if ((as = _asr_async_new(ac, ASR_GETNETBYNAME)) == NULL)
 		goto abort; /* errno set */
 	as->as_run = getnetnamadr_async_run;
 
@@ -71,13 +71,13 @@ getnetbyname_async(const char *name, void *asr)
 	if (as->as.netnamadr.name == NULL)
 		goto abort; /* errno set */
 
-	asr_ctx_unref(ac);
+	_asr_ctx_unref(ac);
 	return (as);
 
     abort:
 	if (as)
-		asr_async_free(as);
-	asr_ctx_unref(ac);
+		_asr_async_free(as);
+	_asr_ctx_unref(ac);
 	return (NULL);
 }
 
@@ -87,21 +87,21 @@ getnetbyaddr_async(in_addr_t net, int family, void *asr)
 	struct asr_ctx	 *ac;
 	struct asr_query *as;
 
-	ac = asr_use_resolver(asr);
-	if ((as = asr_async_new(ac, ASR_GETNETBYADDR)) == NULL)
+	ac = _asr_use_resolver(asr);
+	if ((as = _asr_async_new(ac, ASR_GETNETBYADDR)) == NULL)
 		goto abort; /* errno set */
 	as->as_run = getnetnamadr_async_run;
 
 	as->as.netnamadr.family = family;
 	as->as.netnamadr.addr = net;
 
-	asr_ctx_unref(ac);
+	_asr_ctx_unref(ac);
 	return (as);
 
     abort:
 	if (as)
-		asr_async_free(as);
-	asr_ctx_unref(ac);
+		_asr_async_free(as);
+	_asr_ctx_unref(ac);
 	return (NULL);
 }
 
@@ -138,7 +138,7 @@ getnetnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 
 	case ASR_STATE_NEXT_DB:
 
-		if (asr_iter_db(as) == -1) {
+		if (_asr_iter_db(as) == -1) {
 			async_set_state(as, ASR_STATE_NOT_FOUND);
 			break;
 		}
@@ -155,17 +155,17 @@ getnetnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 				 */
 				type = T_PTR;
 				name = as->as.netnamadr.name;
-				as->as.netnamadr.subq = res_search_async_ctx(
+				as->as.netnamadr.subq = _res_search_async_ctx(
 				    name, C_IN, type, as->as_ctx);
 			} else {
 				type = T_PTR;
 				name = dname;
 
 				in = htonl(as->as.netnamadr.addr);
-				asr_addr_as_fqdn((char *)&in,
+				_asr_addr_as_fqdn((char *)&in,
 				    as->as.netnamadr.family,
 				    dname, sizeof(dname));
-				as->as.netnamadr.subq = res_query_async_ctx(
+				as->as.netnamadr.subq = _res_query_async_ctx(
 				    name, C_IN, type, as->as_ctx);
 			}
 
@@ -289,7 +289,7 @@ netent_file_match(FILE *f, int reqtype, const char *data)
 	in_addr_t		 net;
 
 	for (;;) {
-		n = asr_parse_namedb_line(f, tokens, MAXTOKEN, buf, sizeof(buf));
+		n = _asr_parse_namedb_line(f, tokens, MAXTOKEN, buf, sizeof(buf));
 		if (n == -1) {
 			errno = 0; /* ignore errors reading the file */
 			return (NULL);
@@ -341,12 +341,12 @@ netent_from_packet(int reqtype, char *pkt, size_t pktlen)
 	if ((n = netent_alloc(AF_INET)) == NULL)
 		return (NULL);
 
-	asr_unpack_init(&p, pkt, pktlen);
-	asr_unpack_header(&p, &hdr);
+	_asr_unpack_init(&p, pkt, pktlen);
+	_asr_unpack_header(&p, &hdr);
 	for (; hdr.qdcount; hdr.qdcount--)
-		asr_unpack_query(&p, &q);
+		_asr_unpack_query(&p, &q);
 	for (; hdr.ancount; hdr.ancount--) {
-		asr_unpack_rr(&p, &rr);
+		_asr_unpack_rr(&p, &rr);
 		if (rr.rr_class != C_IN)
 			continue;
 		switch (rr.rr_type) {
@@ -412,7 +412,7 @@ netent_set_cname(struct netent_ext *n, const char *name, int isdname)
 		return (-1);
 
 	if (isdname) {
-		asr_strdname(name, buf, sizeof buf);
+		_asr_strdname(name, buf, sizeof buf);
 		buf[strlen(buf) - 1] = '\0';
 		if (!res_hnok(buf))
 			return (-1);
@@ -443,7 +443,7 @@ netent_add_alias(struct netent_ext *n, const char *name, int isdname)
 		return (-1);
 
 	if (isdname) {
-		asr_strdname(name, buf, sizeof buf);
+		_asr_strdname(name, buf, sizeof buf);
 		buf[strlen(buf)-1] = '\0';
 		if (!res_hnok(buf))
 			return (-1);

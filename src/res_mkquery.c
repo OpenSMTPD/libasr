@@ -51,10 +51,10 @@ res_mkquery(int op, const char *dname, int class, int type,
 		dname = fqdn;
 	}
 
-	if (asr_dname_from_fqdn(dname, dn, sizeof(dn)) == -1)
+	if (_asr_dname_from_fqdn(dname, dn, sizeof(dn)) == -1)
 		return (-1);
 
-	ac = asr_use_resolver(NULL);
+	ac = _asr_use_resolver(NULL);
 
 	memset(&h, 0, sizeof h);
 	h.id = res_randomid();
@@ -62,11 +62,11 @@ res_mkquery(int op, const char *dname, int class, int type,
 		h.flags |= RD_MASK;
 	h.qdcount = 1;
 
-	asr_pack_init(&p, buf, buflen);
-	asr_pack_header(&p, &h);
-	asr_pack_query(&p, type, class, dn);
+	_asr_pack_init(&p, buf, buflen);
+	_asr_pack_header(&p, &h);
+	_asr_pack_query(&p, type, class, dn);
 
-	asr_ctx_unref(ac);
+	_asr_ctx_unref(ac);
 
 	if (p.err)
 		return (-1);
@@ -100,7 +100,7 @@ res_querydomain(const char *name,
 		domain = ndom;
 	}
 
-	if (asr_make_fqdn(name, domain, fqdn, sizeof fqdn) == 0) {
+	if (_asr_make_fqdn(name, domain, fqdn, sizeof fqdn) == 0) {
 		h_errno = NETDB_INTERNAL;
 		errno = EINVAL;
 		return (-1);

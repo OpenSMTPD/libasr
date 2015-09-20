@@ -35,7 +35,7 @@ static const char *print_header(const struct asr_dns_header *, char *, size_t);
 static const char *print_query(const struct asr_dns_query *, char *, size_t);
 static const char *print_rr(const struct asr_dns_rr *, char *, size_t);
 
-FILE *asr_debug = NULL;
+FILE *_asr_debug = NULL;
 
 #define OPCODE_SHIFT	11
 #define Z_SHIFT		 4
@@ -129,7 +129,7 @@ __asr_p_type(int t)
 static const char *
 print_dname(const char *_dname, char *buf, size_t max)
 {
-	return (asr_strdname(_dname, buf, max));
+	return (_asr_strdname(_dname, buf, max));
 }
 
 static const char *
@@ -236,7 +236,7 @@ print_header(const struct asr_dns_header *h, char *buf, size_t max)
 }
 
 void
-asr_dump_packet(FILE *f, const void *data, size_t len)
+_asr_dump_packet(FILE *f, const void *data, size_t len)
 {
 	char			buf[1024];
 	struct asr_unpack	p;
@@ -248,9 +248,9 @@ asr_dump_packet(FILE *f, const void *data, size_t len)
 	if (f == NULL)
 		return;
 
-	asr_unpack_init(&p, data, len);
+	_asr_unpack_init(&p, data, len);
 
-	if (asr_unpack_header(&p, &h) == -1) {
+	if (_asr_unpack_header(&p, &h) == -1) {
 		fprintf(f, ";; BAD PACKET: %s\n", p.err);
 		return;
 	}
@@ -260,7 +260,7 @@ asr_dump_packet(FILE *f, const void *data, size_t len)
 	if (h.qdcount)
 		fprintf(f, ";; QUERY SECTION:\n");
 	for (i = 0; i < h.qdcount; i++) {
-		if (asr_unpack_query(&p, &q) == -1)
+		if (_asr_unpack_query(&p, &q) == -1)
 			goto error;
 		fprintf(f, "%s\n", print_query(&q, buf, sizeof buf));
 	}
@@ -278,7 +278,7 @@ asr_dump_packet(FILE *f, const void *data, size_t len)
 		if (i == ar)
 			fprintf(f, "\n;; ADDITIONAL SECTION:\n");
 
-		if (asr_unpack_rr(&p, &rr) == -1)
+		if (_asr_unpack_rr(&p, &rr) == -1)
 			goto error;
 		fprintf(f, "%s\n", print_rr(&rr, buf, sizeof buf));
 	}
@@ -293,7 +293,7 @@ asr_dump_packet(FILE *f, const void *data, size_t len)
 }
 
 const char *
-print_sockaddr(const struct sockaddr *sa, char *buf, size_t len)
+_asr_print_sockaddr(const struct sockaddr *sa, char *buf, size_t len)
 {
 	char	h[256];
 	int	portno;
@@ -324,7 +324,7 @@ print_sockaddr(const struct sockaddr *sa, char *buf, size_t len)
 }
 
 void
-asr_dump_config(FILE *f, struct asr *a)
+_asr_dump_config(FILE *f, struct asr *a)
 {
 	char		 buf[256];
 	int		 i;
@@ -374,7 +374,7 @@ asr_dump_config(FILE *f, struct asr *a)
 		    ac->ac_nstimeout,
 		    ac->ac_nsretries);
 	for (i = 0; i < ac->ac_nscount; i++)
-		fprintf(f, "	%s\n", print_sockaddr(ac->ac_ns[i], buf,
+		fprintf(f, "	%s\n", _asr_print_sockaddr(ac->ac_ns[i], buf,
 		    sizeof buf));
 	fprintf(f, "HOSTFILE %s\n", ac->ac_hostfile);
 	fprintf(f, "LOOKUP %s", ac->ac_db);
@@ -384,7 +384,7 @@ asr_dump_config(FILE *f, struct asr *a)
 #define CASE(n) case n: return #n
 
 const char *
-asr_statestr(int state)
+_asr_statestr(int state)
 {
 	switch (state) {
 	CASE(ASR_STATE_INIT);
@@ -407,7 +407,7 @@ asr_statestr(int state)
 };
 
 const char *
-asr_querystr(int type)
+_asr_querystr(int type)
 {
 	switch (type) {
 	CASE(ASR_SEND);
@@ -425,7 +425,7 @@ asr_querystr(int type)
 }
 
 const char *
-asr_transitionstr(int type)
+_asr_transitionstr(int type)
 {
 	switch (type) {
 	CASE(ASYNC_COND);

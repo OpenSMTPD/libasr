@@ -41,7 +41,7 @@ res_init(void)
 	struct asr_ctx	*ac;
 	int i;
 
-	ac = asr_use_resolver(NULL);
+	ac = _asr_use_resolver(NULL);
 
 	/*
 	 * The first thread to call res_init() will setup the global _res
@@ -82,7 +82,7 @@ res_init(void)
 		ac->ac_dbcount = strlen(ac->ac_db);
 	}
 
-	asr_ctx_unref(ac);
+	_asr_ctx_unref(ac);
 
 	return (0);
 }
