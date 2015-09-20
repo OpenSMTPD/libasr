@@ -418,12 +418,20 @@ asr_check_reload(struct asr *asr)
 #if ASR_OPT_RELOADCONF
 	struct stat	 st;
 	struct timespec	 ts;
+	pid_t		 pid;
 #endif
 
 	if (asr->a_path == NULL)
 		return;
 
 #if ASR_OPT_RELOADCONF
+
+	pid = getpid();
+	if (pid != asr->a_pid) {
+		asr->a_pid = pid;
+		asr->a_rtime = 0;
+	}
+
 	if (clock_gettime(CLOCK_MONOTONIC, &ts) == -1)
 		return;
 
