@@ -32,7 +32,8 @@ getaddrinfo(const char *hostname, const char *servname,
 	struct asr_result ar;
 	int		 saved_errno = errno;
 
-	res_init();
+	if (hints == NULL || (hints->ai_flags & AI_NUMERICHOST) == 0)
+		res_init();
 
 	as = getaddrinfo_async(hostname, servname, hints, NULL);
 	if (as == NULL) {

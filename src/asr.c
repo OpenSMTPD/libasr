@@ -498,6 +498,12 @@ asr_ctx_create(void)
 	return (ac);
 }
 
+struct asr_ctx *
+_asr_no_resolver(void)
+{
+	return asr_ctx_create();
+}
+
 /*
  * Add a search domain to the async context.
  */

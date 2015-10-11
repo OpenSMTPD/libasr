@@ -154,8 +154,11 @@ getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host,
 	const char *proto;
 	size_t r;
 
-	/* Take a shortcut if we don't care about hostname, or if NI_NUMERICHOST is set. */
-	if (host == NULL || hostlen == 0 || (host && hostlen && flags & NI_NUMERICHOST)) {
+	/* Take a shortcut if we don't care about hostname,
+	 * or if NI_NUMERICHOST is set.
+	 */
+	if (host == NULL || hostlen == 0 ||
+	    (host && hostlen && (flags & NI_NUMERICHOST))) {
 
 		if (host) {
 			r = asr_print_addr(sa, host, hostlen);
