@@ -332,7 +332,6 @@ struct asr_query *_gethostbyaddr_async_ctx(const void *, socklen_t, int,
 
 int _asr_iter_domain(struct asr_query *, const char *, char *, size_t);
 
-#define DEBUG
 #ifdef DEBUG
 
 #define DPRINT(...)		do { if(_asr_debug) {		\
