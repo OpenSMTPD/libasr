@@ -101,7 +101,7 @@ _asr_resolver(const char *conf)
 	if (init == 0) {
 #ifdef DEBUG
 		if (getenv("ASR_DEBUG"))
-			asr_debug = stderr;
+			_asr_debug = stderr;
 #endif
 		init = 1;
 	}
@@ -142,7 +142,7 @@ _asr_resolver(const char *conf)
 	}
 
 #ifdef DEBUG
-	asr_dump_config(asr_debug, asr);
+	_asr_dump_config(_asr_debug, asr);
 #endif
 	return (asr);
 
@@ -200,10 +200,10 @@ asr_run(struct asr_query *as, struct asr_result *ar)
 	int	r, saved_errno = errno;
 
 	DPRINT("asr: asr_run(%p, %p) %s ctx=[%p]\n", as, ar,
-	    asr_querystr(as->as_type), as->as_ctx);
+	    _asr_querystr(as->as_type), as->as_ctx);
 	r = as->as_run(as, ar);
 
-	DPRINT("asr: asr_run(%p, %p) -> %s", as, ar, asr_transitionstr(r));
+	DPRINT("asr: asr_run(%p, %p) -> %s", as, ar, _asr_transitionstr(r));
 #ifdef DEBUG
 	if (r == ASYNC_COND)
 #endif
