@@ -39,25 +39,11 @@
 
 #include "asr_private.h"
 
-#ifndef ASR_OPT_THREADSAFE
-#define ASR_OPT_THREADSAFE 1
-#endif
 #ifndef ASR_OPT_HOSTALIASES
 #define ASR_OPT_HOSTALIASES 1
 #endif
-#ifndef ASR_OPT_ENVOPTS
-#define ASR_OPT_ENVOPTS 1
-#endif
-#ifndef ASR_OPT_RELOADCONF
-#define ASR_OPT_RELOADCONF 1
-#endif
-#ifndef ASR_OPT_ALTCONF
-#define ASR_OPT_ALTCONF 1
-#endif
 
-#if ASR_OPT_THREADSAFE
 #include "thread_private.h"
-#endif
 
 #define DEFAULT_CONF		"lookup file\n"
 #define DEFAULT_LOOKUP		"lookup bind file"
@@ -76,14 +62,7 @@ static int asr_parse_nameserver(struct sockaddr *, const char *);
 static int asr_ndots(const char *);
 static void pass0(char **, int, struct asr_ctx *);
 static int strsplit(char *, char **, int);
-#if ASR_OPT_ENVOPTS
 static void asr_ctx_envopts(struct asr_ctx *);
-#endif
-#if ASR_OPT_THREADSAFE
-static void *__THREAD_NAME(_asr);
-#else
-#	define _THREAD_PRIVATE(a, b, c)  (c)
-#endif
 
 static struct asr *_asr = NULL;
 
@@ -92,9 +71,10 @@ static struct asr *_asr = NULL;
 #endif
 
 /* Allocate and configure an async "resolver". */
-void *
-_asr_resolver(const char *conf)
+static void *
+_asr_resolver(void)
 {
+	const char *conf = _PATH_RESCONF;
 	static int	 init = 0;
 	struct asr	*asr;
 
@@ -109,36 +89,17 @@ _asr_resolver(const char *conf)
 	if ((asr = calloc(1, sizeof(*asr))) == NULL)
 		goto fail;
 
-#if ASR_OPT_ALTCONF
-	/* If not setuid/setgid, allow to use an alternate config. */
-	if (conf == NULL && !issetugid())
-		conf = getenv("ASR_CONFIG");
-#endif
-
-	if (conf == NULL)
-		conf = _PATH_RESCONF;
-
-	if (conf[0] == '!') {
-		/* Use the rest of the string as config file */
+	/* Use the given config file */
+	asr->a_path = strdup(conf);
+	if (asr->a_path == NULL)
+		goto fail;
+	asr_check_reload(asr);
+	if (asr->a_ctx == NULL) {
 		if ((asr->a_ctx = asr_ctx_create()) == NULL)
 			goto fail;
-		if (asr_ctx_from_string(asr->a_ctx, conf + 1) == -1)
+		if (asr_ctx_from_string(asr->a_ctx, DEFAULT_CONF) == -1)
 			goto fail;
-	} else {
-		/* Use the given config file */
-		asr->a_path = strdup(conf);
-		if (asr->a_path == NULL)
-			goto fail;
-		asr_check_reload(asr);
-		if (asr->a_ctx == NULL) {
-			if ((asr->a_ctx = asr_ctx_create()) == NULL)
-				goto fail;
-			if (asr_ctx_from_string(asr->a_ctx, DEFAULT_CONF) == -1)
-				goto fail;
-#if ASR_OPT_ENVOPTS
-			asr_ctx_envopts(asr->a_ctx);
-#endif
-		}
+		asr_ctx_envopts(asr->a_ctx);
 	}
 
 #ifdef DEBUG
@@ -356,7 +317,7 @@ _asr_use_resolver(void *arg)
 		priv = _THREAD_PRIVATE(_asr, _asr, &_asr);
 		if (*priv == NULL) {
 			DPRINT("setting up thread-local resolver\n");
-			*priv = _asr_resolver(NULL);
+			*priv = _asr_resolver();
 		}
 		asr = *priv;
 	}
@@ -414,16 +375,12 @@ static void
 asr_check_reload(struct asr *asr)
 {
 	struct asr_ctx	*ac;
-#if ASR_OPT_RELOADCONF
 	struct stat	 st;
 	struct timespec	 ts;
 	pid_t		 pid;
-#endif
 
 	if (asr->a_path == NULL)
 		return;
-
-#if ASR_OPT_RELOADCONF
 
 	pid = getpid();
 	if (pid != asr->a_pid) {
@@ -444,10 +401,6 @@ asr_check_reload(struct asr *asr)
 	    (ac = asr_ctx_create()) == NULL)
 		return;
 	asr->a_mtime = st.st_mtime;
-#else
-	if ((ac = asr_ctx_create()) == NULL)
-		return;
-#endif
 
 	DPRINT("asr: reloading config file\n");
 	if (asr_ctx_from_file(ac, asr->a_path) == -1) {
@@ -455,9 +408,7 @@ asr_check_reload(struct asr *asr)
 		return;
 	}
 
-#if ASR_OPT_ENVOPTS
 	asr_ctx_envopts(ac);
-#endif
 	if (asr->a_ctx)
 		_asr_ctx_unref(asr->a_ctx);
 	asr->a_ctx = ac;
@@ -762,7 +713,6 @@ asr_ctx_parse(struct asr_ctx *ac, const char *str)
 	return (0);
 }
 
-#if ASR_OPT_ENVOPTS
 /*
  * Check for environment variables altering the configuration as described
  * in resolv.conf(5).  Altough not documented there, this feature is disabled
@@ -795,7 +745,6 @@ asr_ctx_envopts(struct asr_ctx *ac)
 			asr_ctx_parse(ac, buf);
 	}
 }
-#endif
 
 /*
  * Parse a resolv.conf(5) nameserver string into a sockaddr.
