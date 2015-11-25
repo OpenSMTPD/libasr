@@ -1,4 +1,4 @@
-/*	$OpenBSD: gethostnamadr.c,v 1.11 2014/03/26 18:13:15 eric Exp $	*/
+/*	$OpenBSD: gethostnamadr.c,v 1.13 2015/09/14 07:38:37 guenther Exp $	*/
 /*
  * Copyright (c) 2012,2013 Eric Faurot <eric@openbsd.org>
  *
@@ -15,6 +15,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <sys/param.h>	/* ALIGN */
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -141,6 +142,7 @@ gethostbyname(const char *name)
 
 	return gethostbyname2(name, AF_INET);
 }
+DEF_WEAK(gethostbyname);
 
 struct hostent *
 gethostbyname2(const char *name, int af)
@@ -161,6 +163,7 @@ gethostbyname2(const char *name, int af)
 
 	return (&_hostent);
 }
+DEF_WEAK(gethostbyname2);
 
 struct hostent *
 gethostbyaddr(const void *addr, socklen_t len, int af)

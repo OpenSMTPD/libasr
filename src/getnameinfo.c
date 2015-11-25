@@ -1,4 +1,4 @@
-/*	$OpenBSD: getnameinfo.c,v 1.7 2015/09/14 07:38:37 guenther Exp $	*/
+/*	$OpenBSD: getnameinfo.c,v 1.8 2015/10/02 20:56:14 deraadt Exp $	*/
 /*
  * Copyright (c) 2012 Eric Faurot <eric@openbsd.org>
  *
@@ -154,12 +154,12 @@ getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host,
 	const char *proto;
 	size_t r;
 
-	/* Take a shortcut if we don't care about hostname,
+	/*
+	 * Take a shortcut if we don't care about hostname,
 	 * or if NI_NUMERICHOST is set.
 	 */
 	if (host == NULL || hostlen == 0 ||
 	    (host && hostlen && (flags & NI_NUMERICHOST))) {
-
 		if (host) {
 			r = asr_print_addr(sa, host, hostlen);
 			if (r == 0)
@@ -202,3 +202,4 @@ getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host,
 
 	return (ar.ar_gai_errno);
 }
+DEF_WEAK(getnameinfo);
