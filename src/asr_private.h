@@ -121,7 +121,6 @@ enum async_type {
 
 #define	ASR_DB_FILE	'f'
 #define	ASR_DB_DNS	'b'
-#define	ASR_DB_YP	'y'
 
 struct asr_ctx {
 	int		 ac_refcount;

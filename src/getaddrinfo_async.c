@@ -23,12 +23,6 @@
 #include <netinet/in.h>
 #include <arpa/nameser.h>
 #include <net/if.h>
-#ifdef YP
-#include <rpc/rpc.h>
-#include <rpcsvc/yp.h>
-#include <rpcsvc/ypclnt.h>
-#include "ypinternal.h"
-#endif
 #include <netdb.h>
 
 #include <asr.h>
@@ -54,9 +48,6 @@ static int addrinfo_add(struct asr_query *, const struct sockaddr *, const char 
 static int addrinfo_from_file(struct asr_query *, int,  FILE *);
 static int addrinfo_from_pkt(struct asr_query *, char *, size_t);
 static int addrconfig_setup(struct asr_query *);
-#ifdef YP
-static int addrinfo_from_yp(struct asr_query *, int, char *);
-#endif
 
 static const struct match matches[] = {
 	{ PF_INET,	SOCK_DGRAM,	IPPROTO_UDP	},
@@ -124,12 +115,6 @@ getaddrinfo_async(const char *hostname, const char *servname,
 static int
 getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
 {
-#ifdef YP
-	static char	*domain = NULL;
-	char		*res;
-	int		 len;
-	char		 *name;
-#endif
 	char		 fqdn[MAXDNAME];
 	const char	*str;
 	struct addrinfo	*ai;
@@ -423,38 +408,6 @@ getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
 			fclose(f);
 			break;
 
-#ifdef YP
-		case ASR_DB_YP:
-			if (!domain && _yp_check(&domain) == 0) {
-				async_set_state(as, ASR_STATE_NEXT_DB);
-				break;
-			}
-			family = (as->as.ai.hints.ai_family == AF_UNSPEC) ?
-			    AS_FAMILY(as) : as->as.ai.hints.ai_family;
-
-			name = as->as.ai.hostname;
-
-			/* XXX
-			 * ipnodes.byname could also contain IPv4 address
-			 */
-			r = yp_match(domain, (family == AF_INET6) ?
-			    "ipnodes.byname" : "hosts.byname",
-			    name, strlen(name), &res, &len);
-			if (r == 0) {
-				r = addrinfo_from_yp(as, family, res);
-				free(res);
-				if (r == -1) {
-					if (errno == ENOMEM)
-						ar->ar_gai_errno = EAI_MEMORY;
-					else
-						ar->ar_gai_errno = EAI_FAIL;
-					async_set_state(as, ASR_STATE_HALT);
-					break;
-				}
-			}
-			async_set_state(as, ASR_STATE_NEXT_FAMILY);
-			break;
-#endif
 		default:
 			async_set_state(as, ASR_STATE_NEXT_DB);
 		}
@@ -799,55 +752,3 @@ addrconfig_setup(struct asr_query *as)
 
 	return (0);
 }
-
-#ifdef YP
-static int
-strsplit(char *line, char **tokens, int ntokens)
-{
-	int	ntok;
-	char	*cp, **tp;
-
-	for (cp = line, tp = tokens, ntok = 0;
-	    ntok < ntokens && (*tp = strsep(&cp, " \t")) != NULL; )
-		if (**tp != '\0') {
-			tp++;
-			ntok++;
-		}
-
-	return (ntok);
-}
-
-static int
-addrinfo_from_yp(struct asr_query *as, int family, char *line)
-{
-	char		*next, *tokens[MAXTOKEN], *c;
-	int		 ntok;
-	union {
-		struct sockaddr		sa;
-		struct sockaddr_in	sain;
-		struct sockaddr_in6	sain6;
-	} u;
-
-	for (next = line; line; line = next) {
-		if ((next = strchr(line, '\n'))) {
-			*next = '\0';
-			next += 1;
-		}
-		ntok = strsplit(line, tokens, MAXTOKEN);
-		if (ntok < 2)
-			continue;
-
-		if (_asr_sockaddr_from_str(&u.sa, family, tokens[0]) == -1)
-			continue;
-
-		if (as->as.ai.hints.ai_flags & (AI_CANONNAME | AI_FQDN))
-			c = tokens[1];
-		else
-			c = NULL;
-
-		if (addrinfo_add(as, &u.sa, c))
-			return (-1); /* errno set */
-	}
-	return (0);
-}
-#endif

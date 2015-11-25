@@ -579,9 +579,9 @@ pass0(char **tok, int n, struct asr_ctx *ac)
 					return;
 		ac->ac_dbcount = 0;
 		for (i = 1; i < n && ac->ac_dbcount < ASR_MAXDB; i++) {
-			if (!strcmp(tok[i], "yp"))
-				ac->ac_db[ac->ac_dbcount++] = ASR_DB_YP;
-			else if (!strcmp(tok[i], "bind"))
+			if (!strcmp(tok[i], "yp")) {
+				/* silently deprecated */
+			} else if (!strcmp(tok[i], "bind"))
 				ac->ac_db[ac->ac_dbcount++] = ASR_DB_DNS;
 			else if (!strcmp(tok[i], "file"))
 				ac->ac_db[ac->ac_dbcount++] = ASR_DB_FILE;
