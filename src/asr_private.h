@@ -141,7 +141,6 @@ struct asr_ctx {
 };
 
 struct asr {
-	char		*a_path;
 	pid_t		 a_pid;
 	time_t		 a_mtime;
 	time_t		 a_rtime;
