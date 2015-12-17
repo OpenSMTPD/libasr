@@ -77,7 +77,6 @@ getaddrinfo_async(const char *hostname, const char *servname,
 {
 	struct asr_ctx		*ac;
 	struct asr_query	*as;
-	char			 alias[MAXDNAME];
 
 	if (hints == NULL || (hints->ai_flags & AI_NUMERICHOST) == 0)
 		ac = _asr_use_resolver(asr);
@@ -88,8 +87,6 @@ getaddrinfo_async(const char *hostname, const char *servname,
 	as->as_run = getaddrinfo_async_run;
 
 	if (hostname) {
-		if (_asr_hostalias(ac, hostname, alias, sizeof(alias)))
-			hostname = alias;
 		if ((as->as.ai.hostname = strdup(hostname)) == NULL)
 			goto abort; /* errno set */
 	}

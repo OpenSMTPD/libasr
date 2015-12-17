@@ -58,13 +58,9 @@ struct asr_query *
 _res_search_async_ctx(const char *name, int class, int type, struct asr_ctx *ac)
 {
 	struct asr_query	*as;
-	char			 alias[MAXDNAME];
 
 	DPRINT("asr: res_search_async_ctx(\"%s\", %i, %i)\n", name, class,
 	    type);
-
-	if (_asr_hostalias(ac, name, alias, sizeof(alias)))
-		return _res_query_async_ctx(alias, class, type, ac);
 
 	if ((as = _asr_async_new(ac, ASR_SEARCH)) == NULL)
 		goto err; /* errno set */

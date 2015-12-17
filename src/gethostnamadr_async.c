@@ -241,12 +241,8 @@ gethostnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 			if ((f = fopen(_PATH_HOSTS, "re")) == NULL)
 				break;
 
-			if (as->as_type == ASR_GETHOSTBYNAME) {
-				data = _asr_hostalias(as->as_ctx,
-				    as->as.hostnamadr.name, name, sizeof(name));
-				if (data == NULL)
-					data = as->as.hostnamadr.name;
-			}
+			if (as->as_type == ASR_GETHOSTBYNAME)
+				data = as->as.hostnamadr.name;
 			else
 				data = as->as.hostnamadr.addr;
 
