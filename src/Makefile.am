@@ -6,6 +6,7 @@ libasr_la_SOURCES =	asr.c asr_debug.c asr_utils.c getaddrinfo_async.c	\
 
 #openbsd-compat
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/fgetln.c
+libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/reallocarray.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/res_hnok.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strlcat.c
 libasr_la_SOURCES +=	$(top_srcdir)/openbsd-compat/strlcpy.c

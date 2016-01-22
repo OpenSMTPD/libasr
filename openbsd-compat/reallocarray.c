@@ -1,5 +1,6 @@
+/*	$OpenBSD: reallocarray.c,v 1.1 2014/05/08 21:43:49 deraadt Exp $	*/
 /*
- * Copyright (c) 2015 Joerg Jung <jung@openbsd.org>
+ * Copyright (c) 2008 Otto Moerbeek <otto@drijf.net>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,47 +15,28 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/*
- * portable fgetln() version, NOT reentrant
- */
+/* OPENBSD ORIGINAL: lib/libc/stdlib/reallocarray.c */
 
-#ifndef HAVE_FGETLN
-#include <stdio.h>
-#include <stdlib.h>
+#include "includes.h"
+
+#include <sys/types.h>
 #include <errno.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-void *reallocarray(void *, size_t, size_t);
+/*
+ * This is sqrt(SIZE_MAX+1), as s1*s2 <= SIZE_MAX
+ * if both s1 < MUL_NO_OVERFLOW and s2 < MUL_NO_OVERFLOW
+ */
+#define MUL_NO_OVERFLOW	(1UL << (sizeof(size_t) * 4))
 
-char *
-fgetln(FILE *fp, size_t *len)
+void *
+reallocarray(void *optr, size_t nmemb, size_t size)
 {
-	static char *buf = NULL;
-	static size_t bufsz = 0;
-	size_t r = 0;
-	char *p;
-	int c, e;
-
-	if (buf == NULL) {
-		if ((buf = calloc(1, BUFSIZ)) == NULL)
-			return NULL;
-		bufsz = BUFSIZ;
+	if ((nmemb >= MUL_NO_OVERFLOW || size >= MUL_NO_OVERFLOW) &&
+	    nmemb > 0 && SIZE_MAX / nmemb < size) {
+		errno = ENOMEM;
+		return NULL;
 	}
-
-	while ((c = getc(fp)) != EOF) {
-		buf[r++] = c;
-		if (r == bufsz) {
-			if (!(p = reallocarray(buf, 2, bufsz))) {
-				e = errno;
-				free(buf);
-				errno = e;
-				buf = NULL, bufsz = 0;
-				return NULL;
-			}
-			buf = p, bufsz = 2 * bufsz;
-		}
-		if (c == '\n')
-			break;
-	}
-	return (*len = r) ? buf : NULL;
+	return realloc(optr, size * nmemb);
 }
-#endif
