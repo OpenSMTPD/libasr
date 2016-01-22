@@ -467,14 +467,6 @@ AC_CHECK_FUNCS([ \
 ])
 #l1685
 
-#l1715
-AC_SEARCH_LIBS([nanosleep], [rt posix4], [AC_DEFINE([HAVE_NANOSLEEP], [1],
-	[Some systems put nanosleep outside of libc])])
-
-AC_SEARCH_LIBS([clock_gettime], [rt],
-	[AC_DEFINE([HAVE_CLOCK_GETTIME], [1], [Have clock_gettime])])
-#l1719
-
 #l1723
 AC_CHECK_DECL([strsep],
 	[AC_CHECK_FUNCS([strsep])],
@@ -1613,6 +1605,7 @@ AC_SUBST([UNSUPPORTED_ALGORITHMS], [$unsupported_algorithms])
 AC_EXEEXT
 #l4757
 
+OBSD_NEED_CLOCK_GETTIME
 OBSD_NEED_RESOLV_DEFINES
 OBSD_NEED_RES_HNOK
 
