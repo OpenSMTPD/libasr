@@ -389,6 +389,11 @@ struct winsize {
 # define _PATH_DEVNULL "/dev/null"
 #endif
 
+#ifndef _PATH_HOSTS
+#define	_PATH_HOSTS	"/etc/hosts"
+#endif
+
+
 /* user may have set a different path */
 #if defined(_PATH_MAILDIR) && defined(MAIL_DIRECTORY)
 # undef _PATH_MAILDIR
