@@ -833,4 +833,11 @@ struct winsize {
 
 /* end of chl */
 
+
+/* directly from glibc ... */
+#ifndef HAVE_RES_RANDOMID
+#define res_randomid(x) (0xfff & getpid())
+#endif
+
+
 #endif /* _DEFINES_H */
