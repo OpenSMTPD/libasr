@@ -595,6 +595,8 @@ pass0(char **tok, int n, struct asr_ctx *ac)
 		for (i = 1; i < n; i++) {
 			if (!strcmp(tok[i], "tcp"))
 				ac->ac_options |= RES_USEVC;
+			else if (!strcmp(tok[i], "edns0"))
+				ac->ac_options |= RES_USE_EDNS0;
 			else if ((!strncmp(tok[i], "ndots:", 6))) {
 				e = NULL;
 				d = strtonum(tok[i] + 6, 1, 16, &e);

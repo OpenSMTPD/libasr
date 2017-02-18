@@ -296,11 +296,13 @@ enum asr_state {
 	ASR_STATE_HALT,
 };
 
+#define MAXPACKETSZ	4096
 
 /* asr_utils.c */
 void _asr_pack_init(struct asr_pack *, char *, size_t);
 int _asr_pack_header(struct asr_pack *, const struct asr_dns_header *);
 int _asr_pack_query(struct asr_pack *, uint16_t, uint16_t, const char *);
+int _asr_pack_edns0(struct asr_pack *, uint16_t);
 void _asr_unpack_init(struct asr_unpack *, const char *, size_t);
 int _asr_unpack_header(struct asr_unpack *, struct asr_dns_header *);
 int _asr_unpack_query(struct asr_unpack *, struct asr_dns_query *);
