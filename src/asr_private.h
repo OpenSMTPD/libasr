@@ -36,14 +36,14 @@ struct asr_pack {
 	char		*buf;
 	size_t		 len;
 	size_t		 offset;
-	const char	*err;
+	int		 err;
 };
 
 struct asr_unpack {
 	const char	*buf;
 	size_t		 len;
 	size_t		 offset;
-	const char	*err;
+	int		 err;
 };
 
 struct asr_dns_header {

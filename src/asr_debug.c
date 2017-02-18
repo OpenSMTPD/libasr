@@ -26,6 +26,7 @@
 
 #include <asr.h>
 #include <resolv.h>
+#include <string.h>
 
 #include "asr_private.h"
 
@@ -251,7 +252,7 @@ _asr_dump_packet(FILE *f, const void *data, size_t len)
 	_asr_unpack_init(&p, data, len);
 
 	if (_asr_unpack_header(&p, &h) == -1) {
-		fprintf(f, ";; BAD PACKET: %s\n", p.err);
+		fprintf(f, ";; BAD PACKET: %s\n", strerror(p.err));
 		return;
 	}
 
@@ -289,7 +290,7 @@ _asr_dump_packet(FILE *f, const void *data, size_t len)
     error:
 	if (p.err)
 		fprintf(f, ";; ERROR AT OFFSET %zu/%zu: %s\n", p.offset, p.len,
-		    p.err);
+		    strerror(p.err));
 }
 
 const char *

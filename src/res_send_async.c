@@ -733,7 +733,8 @@ validate_packet(struct asr_query *as)
 	}
 
 	/* Check for truncation */
-	if (h.flags & TC_MASK) {
+	if (h.flags & TC_MASK && !(as->as_ctx->ac_options & RES_IGNTC)) {
+		DPRINT("truncated\n");
 		errno = EOVERFLOW;
 		return (-1);
 	}
@@ -742,8 +743,18 @@ validate_packet(struct asr_query *as)
 	for (r = h.ancount + h.nscount + h.arcount; r; r--)
 		_asr_unpack_rr(&p, &rr);
 
-	if (p.err || (p.offset != as->as.dns.ibuflen))
-		goto inval;
+	/* Report any error found when unpacking the RRs. */
+	if (p.err) {
+		DPRINT("unpack: %s\n", strerror(p.err));
+		errno = p.err;
+		return (-1);
+	}
+
+	if (p.offset != as->as.dns.ibuflen) {
+		DPRINT("trailing garbage\n");
+		errno = EMSGSIZE;
+		return (-1);
+	}
 
 	return (0);
 
