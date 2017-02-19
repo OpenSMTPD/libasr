@@ -1,3 +1,12 @@
+libasr 1.0.3  (2017/02/??)
+--------------------------
+* add support for edns0
+* remove support for HOSTALIASES
+* remove support for non-standard [addr]:port syntax for nameserver
+* remove support for YP
+* always reload resolv.conf if pid changed
+* various bugfixes and improvements
+
 libasr 1.0.2  (2015/06/03)
 --------------------------
 * Make AI_ADDRCONFIG filter on loopback address instead of loopback interface
