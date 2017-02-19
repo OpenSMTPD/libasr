@@ -589,8 +589,10 @@ pass0(char **tok, int n, struct asr_ctx *ac)
 		}
 	} else if (!strcmp(tok[0], "search")) {
 		/* resolv.conf says the last line wins */
-		for (i = 0; i < ASR_MAXDOM; i++)
+		for (i = 0; i < ASR_MAXDOM; i++) {
 			free(ac->ac_dom[i]);
+			ac->ac_dom[i] = NULL;
+		}
 		ac->ac_domcount = 0;
 		for (i = 1; i < n; i++)
 			asr_ctx_add_searchdomain(ac, tok[i]);
