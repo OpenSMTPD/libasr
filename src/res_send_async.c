@@ -302,7 +302,7 @@ res_send_async_run(struct asr_query *as, struct asr_result *ar)
 static int
 sockaddr_connect(const struct sockaddr *sa, int socktype)
 {
-	int errno_save, flags, sock;
+	int errno_save, sock, flags;
 
 	if ((sock = socket(sa->sa_family, socktype, 0)) == -1)
 		goto fail;

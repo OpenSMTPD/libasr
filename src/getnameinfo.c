@@ -94,7 +94,7 @@ asr_print_addr(const struct sockaddr *sa, char *buf, size_t buflen)
 	return (s);
 }
 
-/* 
+/*
  * Print the textual representation of the port set on "sa".
  *
  * If proto is not NULL, it is used as parameter to "getservbyport_r(3)" to

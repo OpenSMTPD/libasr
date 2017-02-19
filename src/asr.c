@@ -709,7 +709,7 @@ asr_ctx_parse(struct asr_ctx *ac, const char *str)
 
 /*
  * Check for environment variables altering the configuration as described
- * in resolv.conf(5).  Altough not documented there, this feature is disabled
+ * in resolv.conf(5).  Although not documented there, this feature is disabled
  * for setuid/setgid programs.
  */
 static void
