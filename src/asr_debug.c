@@ -30,6 +30,10 @@
 
 #include "asr_private.h"
 
+#ifndef T_OPT
+#define T_OPT 41
+#endif
+
 static const char *rcodetostr(uint16_t);
 static const char *print_dname(const char *, char *, size_t);
 static const char *print_header(const struct asr_dns_header *, char *, size_t);
@@ -105,6 +109,7 @@ __asr_p_type(int t)
 	case T_NIMLOC:	return "NIMLOC";
 	case T_SRV:	return "SRV";
 	case T_ATMA:	return "ATMA";
+	case T_OPT:	return "OPT";
 	case T_IXFR:	return "IXFR";
 	case T_AXFR:	return "AXFR";
 	case T_MAILB:	return "MAILB";
