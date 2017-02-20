@@ -30,10 +30,6 @@
 
 #include "asr_private.h"
 
-#ifndef T_OPT
-#define T_OPT 41
-#endif
-
 static const char *rcodetostr(uint16_t);
 static const char *print_dname(const char *, char *, size_t);
 static const char *print_header(const struct asr_dns_header *, char *, size_t);

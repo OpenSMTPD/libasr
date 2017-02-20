@@ -428,7 +428,7 @@ int
 _asr_pack_edns0(struct asr_pack *p, uint16_t pktsz)
 {
 	pack_dname(p, "");	/* root */
-	pack_u16(p, 41);	/* OPT */
+	pack_u16(p, T_OPT);	/* OPT */
 	pack_u16(p, pktsz);	/* UDP payload size */
 	pack_u32(p, 0);		/* extended RCODE and flags */
 	pack_u16(p, 0);		/* RDATA len */

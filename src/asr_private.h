@@ -31,6 +31,9 @@
 #define OPCODE(v)	((v) & OPCODE_MASK)
 #define RCODE(v)	((v) & RCODE_MASK)
 
+#ifndef T_OPT
+#define T_OPT 41
+#endif
 
 struct asr_pack {
 	char		*buf;
