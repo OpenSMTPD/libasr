@@ -95,12 +95,12 @@ getrrsetbyname_async_run(struct asr_query *as, struct asr_result *ar)
 		}
 
 		/* Create a delegate the lookup to a subquery. */
-		as->as.rrset.subq = _res_query_async_ctx(
+		as->as_subq = _res_query_async_ctx(
 		    as->as.rrset.name,
 		    as->as.rrset.class,
 		    as->as.rrset.type,
 		    as->as_ctx);
-		if (as->as.rrset.subq == NULL) {
+		if (as->as_subq == NULL) {
 			ar->ar_rrset_errno = ERRSET_FAIL;
 			async_set_state(as, ASR_STATE_HALT);
 			break;
@@ -111,10 +111,10 @@ getrrsetbyname_async_run(struct asr_query *as, struct asr_result *ar)
 
 	case ASR_STATE_SUBQUERY:
 
-		if ((asr_run(as->as.rrset.subq, ar)) == ASYNC_COND)
+		if ((asr_run(as->as_subq, ar)) == ASYNC_COND)
 			return (ASYNC_COND);
 
-		as->as.rrset.subq = NULL;
+		as->as_subq = NULL;
 
 		/* No packet received.*/
 		if (ar->ar_datalen == -1) {

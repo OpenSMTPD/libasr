@@ -69,7 +69,7 @@ res_send_async(const unsigned char *buf, int buflen, void *asr)
 	}
 	as->as_run = res_send_async_run;
 
-	as->as.dns.flags |= ASYNC_EXTOBUF;
+	as->as_flags |= ASYNC_EXTOBUF;
 	as->as.dns.obuf = (unsigned char *)buf;
 	as->as.dns.obuflen = buflen;
 	as->as.dns.obufsize = buflen;
@@ -353,7 +353,7 @@ setup_query(struct asr_query *as, const char *name, const char *dom,
 	char			fqdn[MAXDNAME];
 	char			dname[MAXDNAME];
 
-	if (as->as.dns.flags & ASYNC_EXTOBUF) {
+	if (as->as_flags & ASYNC_EXTOBUF) {
 		errno = EINVAL;
 		DPRINT("attempting to write in user packet");
 		return (-1);

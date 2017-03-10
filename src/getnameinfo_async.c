@@ -143,10 +143,10 @@ getnameinfo_async_run(struct asr_query *as, struct asr_result *ar)
 		/*
 		 * Create a subquery to lookup the address.
 		 */
-		as->as.ni.subq = _gethostbyaddr_async_ctx(addr, addrlen,
+		as->as_subq = _gethostbyaddr_async_ctx(addr, addrlen,
 		    as->as.ni.sa.sa.sa_family,
 		    as->as_ctx);
-		if (as->as.ni.subq == NULL) {
+		if (as->as_subq == NULL) {
 			ar->ar_gai_errno = EAI_MEMORY;
 			async_set_state(as, ASR_STATE_HALT);
 			break;
@@ -157,13 +157,13 @@ getnameinfo_async_run(struct asr_query *as, struct asr_result *ar)
 
 	case ASR_STATE_SUBQUERY:
 
-		if ((r = asr_run(as->as.ni.subq, ar)) == ASYNC_COND)
+		if ((r = asr_run(as->as_subq, ar)) == ASYNC_COND)
 			return (ASYNC_COND);
 
 		/*
 		 * Request done.
 		 */
-		as->as.ni.subq = NULL;
+		as->as_subq = NULL;
 
 		if (ar->ar_hostent == NULL) {
 			if (as->as.ni.flags & NI_NAMEREQD) {

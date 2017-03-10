@@ -121,9 +121,9 @@ res_search_async_run(struct asr_query *as, struct asr_result *ar)
 			async_set_state(as, ASR_STATE_HALT);
 			break;
 		}
-		as->as.search.subq = _res_query_async_ctx(fqdn,
+		as->as_subq = _res_query_async_ctx(fqdn,
 		    as->as.search.class, as->as.search.type, as->as_ctx);
-		if (as->as.search.subq == NULL) {
+		if (as->as_subq == NULL) {
 			ar->ar_errno = errno;
 			if (errno == EINVAL)
 				ar->ar_h_errno = NO_RECOVERY;
@@ -139,9 +139,9 @@ res_search_async_run(struct asr_query *as, struct asr_result *ar)
 
 	case ASR_STATE_SUBQUERY:
 
-		if ((r = asr_run(as->as.search.subq, ar)) == ASYNC_COND)
+		if ((r = asr_run(as->as_subq, ar)) == ASYNC_COND)
 			return (ASYNC_COND);
-		as->as.search.subq = NULL;
+		as->as_subq = NULL;
 
 		if (ar->ar_h_errno == NETDB_SUCCESS) {
 			async_set_state(as, ASR_STATE_HALT);
@@ -170,9 +170,9 @@ res_search_async_run(struct asr_query *as, struct asr_result *ar)
 
 		if (as->as_dom_flags & ASYNC_DOM_DOMAIN) {
 			if (ar->ar_h_errno == NO_DATA)
-				as->as.search.flags |= ASYNC_NODATA;
+				as->as_flags |= ASYNC_NODATA;
 			else if (ar->ar_h_errno == TRY_AGAIN)
-				as->as.search.flags |= ASYNC_AGAIN;
+				as->as_flags |= ASYNC_AGAIN;
 		}
 
 		async_set_state(as, ASR_STATE_NEXT_DOMAIN);
@@ -182,9 +182,9 @@ res_search_async_run(struct asr_query *as, struct asr_result *ar)
 
 		if (as->as.search.saved_h_errno != HERRNO_UNSET)
 			ar->ar_h_errno = as->as.search.saved_h_errno;
-		else if (as->as.search.flags & ASYNC_NODATA)
+		else if (as->as_flags & ASYNC_NODATA)
 			ar->ar_h_errno = NO_DATA;
-		else if (as->as.search.flags & ASYNC_AGAIN)
+		else if (as->as_flags & ASYNC_AGAIN)
 			ar->ar_h_errno = TRY_AGAIN;
 		/*
 		 * Else, we got the ar_h_errno value set by res_query_async()

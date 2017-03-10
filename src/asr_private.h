@@ -170,11 +170,13 @@ struct asr_query {
 	int		(*as_run)(struct asr_query *, struct asr_result *);
 	struct asr_ctx	*as_ctx;
 	int		 as_type;
+	int		 as_flags;
 	int		 as_state;
 
 	/* cond */
 	int		 as_timeout;
 	int		 as_fd;
+	struct asr_query *as_subq;
 
 	/* loop indices in ctx */
 	int		 as_dom_step;
@@ -187,7 +189,6 @@ struct asr_query {
 
 	union {
 		struct {
-			int		 flags;
 			uint16_t	 reqid;
 			int		 class;
 			int		 type;
@@ -210,11 +211,9 @@ struct asr_query {
 		} dns;
 
 		struct {
-			int		 flags;
 			int		 class;
 			int		 type;
 			char		*name;
-			struct asr_query	*subq;
 			int		 saved_h_errno;
 		} search;
 
@@ -223,13 +222,11 @@ struct asr_query {
 			int		 class;
 			int		 type;
 			char		*name;
-			struct asr_query	*subq;
 		} rrset;
 
 		struct {
 			char		*name;
 			int		 family;
-			struct asr_query	*subq;
 			char		 addr[16];
 			int		 addrlen;
 			int		 subq_h_errno;
@@ -238,7 +235,6 @@ struct asr_query {
 		struct {
 			char		*name;
 			int		 family;
-			struct asr_query	*subq;
 			in_addr_t	 addr;
 		} netnamadr;
 
@@ -257,8 +253,6 @@ struct asr_query {
 			char		*fqdn;
 			struct addrinfo	*aifirst;
 			struct addrinfo	*ailast;
-			struct asr_query	*subq;
-			int		 flags;
 		} ai;
 
 		struct {
@@ -272,7 +266,6 @@ struct asr_query {
 				struct sockaddr_in6	sain6;
 			}		 sa;
 			int		 flags;
-			struct asr_query	*subq;
 		} ni;
 #define MAXTOKEN 10
 	} as;
