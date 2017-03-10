@@ -1,6 +1,6 @@
 libasr 1.0.3  (2017/02/??)
 --------------------------
-* add support for edns0
+* add support for edns0 and dnssec
 * remove support for HOSTALIASES
 * remove support for non-standard [addr]:port syntax for nameserver
 * remove support for YP
