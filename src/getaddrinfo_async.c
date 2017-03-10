@@ -340,6 +340,7 @@ getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
 		if (as->as.ai.fqdn == NULL) {
 			ar->ar_gai_errno = EAI_MEMORY;
 			async_set_state(as, ASR_STATE_HALT);
+			break;
 		}
 
 		async_set_state(as, ASR_STATE_SAME_DB);

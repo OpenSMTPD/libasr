@@ -173,6 +173,7 @@ getnetnamadr_async_run(struct asr_query *as, struct asr_result *ar)
 				ar->ar_errno = errno;
 				ar->ar_h_errno = NETDB_INTERNAL;
 				async_set_state(as, ASR_STATE_HALT);
+				break;
 			}
 			async_set_state(as, ASR_STATE_SUBQUERY);
 			break;
