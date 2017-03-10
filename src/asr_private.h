@@ -25,7 +25,9 @@
 #define TC_MASK		(0x1 <<  9)
 #define RD_MASK		(0x1 <<  8)
 #define RA_MASK		(0x1 <<  7)
-#define Z_MASK		(0x7 <<  4)
+#define Z_MASK		(0x1 <<  6)
+#define AD_MASK		(0x1 <<  5)
+#define CD_MASK		(0x1 <<  4)
 #define RCODE_MASK	(0xf)
 
 #define OPCODE(v)	((v) & OPCODE_MASK)
@@ -33,6 +35,10 @@
 
 #ifndef T_OPT
 #define T_OPT 41
+#endif
+
+#ifndef	DNS_MESSAGEEXTFLAG_DO
+#define	DNS_MESSAGEEXTFLAG_DO	0x8000U
 #endif
 
 struct asr_pack {
@@ -298,7 +304,7 @@ enum asr_state {
 void _asr_pack_init(struct asr_pack *, char *, size_t);
 int _asr_pack_header(struct asr_pack *, const struct asr_dns_header *);
 int _asr_pack_query(struct asr_pack *, uint16_t, uint16_t, const char *);
-int _asr_pack_edns0(struct asr_pack *, uint16_t);
+int _asr_pack_edns0(struct asr_pack *, uint16_t, int);
 void _asr_unpack_init(struct asr_unpack *, const char *, size_t);
 int _asr_unpack_header(struct asr_unpack *, struct asr_dns_header *);
 int _asr_unpack_query(struct asr_unpack *, struct asr_dns_query *);
