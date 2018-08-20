@@ -41,7 +41,7 @@ AC_PATH_PROG([NROFF], [nroff])
 AC_PATH_PROG([MANDOC], [mandoc])
 AC_PROG_YACC
 
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([foreign subdir-objects])
 
 LT_INIT
 
