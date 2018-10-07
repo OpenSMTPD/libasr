@@ -498,13 +498,12 @@ get_port(const char *servname, const char *proto, int numonly)
 #else
 	r = -1;
 #endif
+	if (r == -1)
+		return (-1); /* not found */
 	port = ntohs(se.s_port);
 #ifdef HAVE_ENDSERVENT_R
 	endservent_r(&sed);
 #endif
-
-	if (r == -1)
-		return (-1); /* not found */
 
 	return (port);
 }
