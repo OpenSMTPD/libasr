@@ -47,6 +47,10 @@
 #define _PATH_HOSTS "/etc/hosts"
 #endif
 
+#ifndef _PATH_NETWORKS
+#define _PATH_NETWORKS "/etc/networks"
+#endif
+
 /*
  * arpa/nameserv.h
  */
