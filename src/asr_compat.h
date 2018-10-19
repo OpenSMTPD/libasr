@@ -49,3 +49,7 @@
 #ifndef	DNS_MESSAGEEXTFLAG_DO
 #define	DNS_MESSAGEEXTFLAG_DO	0x8000U
 #endif
+
+#ifndef SCOPE_DELIMITER
+#define SCOPE_DELIMITER '%'
+#endif
