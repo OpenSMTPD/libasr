@@ -39,6 +39,14 @@
     (AI_PASSIVE | AI_CANONNAME | AI_NUMERICHOST | AI_NUMERICSERV | AI_ADDRCONFIG | AI_FQDN)
 #endif
 
+#ifndef SCOPE_DELIMITER
+#define SCOPE_DELIMITER '%'
+#endif
+
+#ifndef _PATH_HOSTS
+#define _PATH_HOSTS "/etc/hosts"
+#endif
+
 /*
  * arpa/nameserv.h
  */
@@ -48,8 +56,4 @@
 
 #ifndef	DNS_MESSAGEEXTFLAG_DO
 #define	DNS_MESSAGEEXTFLAG_DO	0x8000U
-#endif
-
-#ifndef SCOPE_DELIMITER
-#define SCOPE_DELIMITER '%'
 #endif
