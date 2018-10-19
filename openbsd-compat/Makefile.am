@@ -8,3 +8,4 @@ libopenbsdcompat_a_SOURCES +=	strlcpy.c
 libopenbsdcompat_a_SOURCES +=	strtonum.c
 
 libopenbsdcompat_a_CPPFLAGS =	-I$(builddir)/include
+libopenbsdcompat_a_CFLAGS =	-fPIC
