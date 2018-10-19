@@ -17,7 +17,7 @@
 
 #include <stdio.h>
 
-#define ASR_BUFSIZ	1024
+#include "asr_compat.h"
 
 #define QR_MASK		(0x1 << 15)
 #define OPCODE_MASK	(0xf << 11)
@@ -32,14 +32,6 @@
 
 #define OPCODE(v)	((v) & OPCODE_MASK)
 #define RCODE(v)	((v) & RCODE_MASK)
-
-#ifndef T_OPT
-#define T_OPT 41
-#endif
-
-#ifndef	DNS_MESSAGEEXTFLAG_DO
-#define	DNS_MESSAGEEXTFLAG_DO	0x8000U
-#endif
 
 struct asr_pack {
 	char		*buf;
