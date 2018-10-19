@@ -1,0 +1,25 @@
+AC_DEFUN([OPENBSD_CHECK_TYPES], [
+    AC_CHECK_TYPES([long long, unsigned long long, long double])
+    AC_CHECK_SIZEOF([short int], [2])
+    AC_CHECK_SIZEOF([int], [4])
+    AC_CHECK_SIZEOF([long int], [4])
+    AC_CHECK_SIZEOF([long long int], [8])
+    AC_TYPE_INT8_T
+    AC_TYPE_INT16_T
+    AC_TYPE_INT32_T
+    AC_TYPE_INT64_T
+    AC_TYPE_UINT8_T
+    AC_TYPE_UINT16_T
+    AC_TYPE_UINT32_T
+    AC_TYPE_UINT64_T
+    AC_TYPE_INTPTR_T
+    AC_TYPE_INTMAX_T
+    AC_TYPE_UINTPTR_T
+    AC_TYPE_UINTMAX_T
+    AC_TYPE_SIZE_T
+    AC_TYPE_SSIZE_T
+    AC_TYPE_OFF_T
+    AC_TYPE_MODE_T
+    AC_TYPE_PID_T
+    AC_TYPE_UID_T
+])

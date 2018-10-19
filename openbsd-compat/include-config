@@ -1,0 +1,42 @@
+#/bin/sh
+
+set -e
+SRCDIR=$1
+shift
+DSTDIR=.
+
+SRC=${SRCDIR}/openbsd-compat/includes
+DST=${DSTDIR}/openbsd-compat/include
+
+awk '/^#define /{print $2 "=" $3, $4, $5, $6, $7}' config.h > config.rc
+. ./config.rc
+
+copy_header()
+{
+	local F=$1;
+
+	echo copying $F...
+	mkdir -p ${DST}/$(dirname $F)
+	cp ${SRC}/$F ${DST}/$F
+}
+
+copy_missing_header()
+{
+	local F=$1;
+	local V=$2;
+	local D=$(eval echo $"$V")
+
+	if [ -z ${D} ]; then
+		copy_header $F
+	fi;
+}
+
+copy_header		includes.h
+copy_header		compat-socket.h
+copy_header		compat-stdio.h
+copy_header		compat-stdlib.h
+copy_header		compat-string.h
+copy_header		compat-time.h
+
+copy_missing_header	sys/queue.h	HAVE_SYS_QUEUE_H
+copy_missing_header	sys/tree.h	HAVE_SYS_TREE_H
