@@ -83,18 +83,83 @@ OPENBSD_CHECK_FUNCTIONS
 #
 
 #
-# libasr specific checks
+# libasr specific checks.
 #
-AC_CHECK_FUNCS(		\
-    __res_hnok		\
-    __res_randomid	\
-)
-AS_IF([test "x$ac_cv_func___res_hnok" == "xno"], [
-    AC_SEARCH_LIBS([__res_hnok], [resolv])
+
+# This ought to be part of the generic compat library, but we don't want to force
+# linking against other libs (-lresolv for instance) in all cases.
+# It has to be improved at some point.
+#
+AC_DEFUN([LIBASR_CHECK_CLOCK_GETTIME], [AC_LANG_PROGRAM([[
+    #include <time.h>
+    ]], [[
+    clock_gettime(0, NULL);
+    ]])
 ])
-AS_IF([test "x$ac_cv_func___res_randomid" == "xno"], [
-    AC_SEARCH_LIBS([__res_randomid], [resolv])
+AC_MSG_CHECKING([if clock_gettime() will build])
+AC_LINK_IFELSE(
+    [ LIBASR_CHECK_CLOCK_GETTIME ],
+    [ AC_MSG_RESULT([yes])
+      AC_DEFINE([HAVE_CLOCK_GETTIME], [1], [Have clock_gettime()])],
+    [ AC_MSG_RESULT([no])
+      saved_LIBS="$LIBS"
+      LIBS="$LIBS -lrt"
+      AC_MSG_CHECKING([if clock_gettime() will build with -lrt])
+      AC_LINK_IFELSE(
+          [ LIBASR_CHECK_CLOCK_GETTIME ],
+          [ AC_MSG_RESULT([yes])
+            AC_DEFINE([HAVE_CLOCK_GETTIME], [1], [Have clock_gettime()])],
+          [ LIBS="$saved_LIBS"
+            AC_MSG_RESULT([no])])
+      ])
+
+AC_DEFUN([LIBASR_CHECK_RES_HNOK], [AC_LANG_PROGRAM([[
+    #include <resolv.h>
+    ]], [[
+    res_hnok("");
+    ]])
 ])
+AC_MSG_CHECKING([if res_hnok() will build])
+AC_LINK_IFELSE(
+    [ LIBASR_CHECK_RES_HNOK ],
+    [ AC_MSG_RESULT([yes])
+      AC_DEFINE([HAVE_RES_HNOK], [1], [Have res_hnok()])],
+    [ AC_MSG_RESULT([no])
+      saved_LIBS="$LIBS"
+      LIBS="$LIBS -lresolv"
+      AC_MSG_CHECKING([if res_hnok() will build with -lresolv])
+      AC_LINK_IFELSE(
+          [ LIBASR_CHECK_RES_HNOK ],
+          [ AC_MSG_RESULT([yes])
+            AC_DEFINE([HAVE_RES_HNOK], [1], [Have res_hnok()])],
+          [ LIBS="$saved_LIBS"
+            AC_MSG_RESULT([no])])
+      ])
+
+# Same remark as above.
+#
+AC_DEFUN([LIBASR_CHECK_RES_RANDOMID], [AC_LANG_PROGRAM([[
+    #include <resolv.h>
+    ]], [[
+    res_randomid();
+    ]])
+])
+AC_MSG_CHECKING([if res_randomid() will build])
+AC_LINK_IFELSE(
+    [ LIBASR_CHECK_RES_RANDOMID ],
+    [ AC_MSG_RESULT([yes])
+      AC_DEFINE([HAVE_RES_RANDOMID], [1], [Have res_randomid()])],
+    [ AC_MSG_RESULT([no])
+      saved_LIBS="$LIBS"
+      LIBS="$LIBS -lresolv"
+      AC_MSG_CHECKING([if res_randomid() will build with -lresolv])
+      AC_LINK_IFELSE(
+          [ LIBASR_CHECK_RES_RANDOMID ],
+          [ AC_MSG_RESULT([yes])
+            AC_DEFINE([HAVE_RES_RANDOMID], [1], [Have res_randomid()])],
+          [ LIBS="$saved_LIBS"
+            AC_MSG_RESULT([no])])
+      ])
 
 #
 # OUTPUT

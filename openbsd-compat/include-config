@@ -32,6 +32,7 @@ copy_missing_header()
 }
 
 copy_header		includes.h
+copy_header		compat-resolv.h
 copy_header		compat-socket.h
 copy_header		compat-stdio.h
 copy_header		compat-stdlib.h

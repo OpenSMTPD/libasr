@@ -14,23 +14,12 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef INCLUDES_H
-#define INCLUDES_H
+#ifndef HAVE_RES_HNOK
+int
+res_hnok(const char *);
+#endif
 
-#include "config.h"
-
-#define _GNU_SOURCE
-
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <time.h>
-
-#include "compat-resolv.h"
-#include "compat-socket.h"
-#include "compat-stdio.h"
-#include "compat-stdlib.h"
-#include "compat-string.h"
-#include "compat-time.h"
-
-#endif /* INCLUDES_H */
+#ifndef HAVE_RES_RANDDOMID
+unsigned int
+res_randomid(void);
+#endif

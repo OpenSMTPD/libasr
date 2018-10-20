@@ -105,6 +105,8 @@ res_hnok(const char *dn)
 	return (1);
 }
 
+#if 0
+
 /*
  * hostname-like (A, MX, WKS) owners can have "*" as their first label
  * but must otherwise be as a host name.
@@ -164,5 +166,7 @@ res_dnok(const char *dn)
 			return (0);
 	return (1);
 }
+
+#endif /* if 0 */
 
 #endif /* !HAVE_RES_HNOK */
