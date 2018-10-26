@@ -18,12 +18,12 @@
  * portable fgetln() version, NOT reentrant
  */
 
+#include "includes.h"
+
 #ifndef HAVE_FGETLN
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-
-void *reallocarray(void *, size_t, size_t);
 
 char *
 fgetln(FILE *fp, size_t *len)
@@ -57,4 +57,4 @@ fgetln(FILE *fp, size_t *len)
 	}
 	return (*len = r) ? buf : NULL;
 }
-#endif
+#endif /* !HAVE_FGETLN */
