@@ -115,6 +115,9 @@ AC_LINK_IFELSE(
       ])
 
 AC_DEFUN([LIBASR_CHECK_RES_HNOK], [AC_LANG_PROGRAM([[
+    #include <sys/types.h>
+    #include <netinet/in.h>
+    #include <arpa/nameser.h>
     #include <resolv.h>
     ]], [[
     res_hnok("");
@@ -140,6 +143,9 @@ AC_LINK_IFELSE(
 # Same remark as above.
 #
 AC_DEFUN([LIBASR_CHECK_RES_RANDOMID], [AC_LANG_PROGRAM([[
+    #include <sys/types.h>
+    #include <netinet/in.h>
+    #include <arpa/nameser.h>
     #include <resolv.h>
     ]], [[
     res_randomid();
