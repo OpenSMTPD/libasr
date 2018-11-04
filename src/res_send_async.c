@@ -1,4 +1,4 @@
-/*	$OpenBSD: res_send_async.c,v 1.22 2014/03/26 18:13:15 eric Exp $	*/
+/*	$OpenBSD: res_send_async.c,v 1.36 2017/03/15 15:54:41 deraadt Exp $	*/
 /*
  * Copyright (c) 2012 Eric Faurot <eric@openbsd.org>
  *
@@ -96,6 +96,7 @@ res_send_async(const unsigned char *buf, int buflen, void *asr)
 	_asr_ctx_unref(ac);
 	return (NULL);
 }
+DEF_WEAK(res_send_async);
 
 /*
  * Unlike res_query(), this version will actually return the packet
@@ -116,6 +117,7 @@ res_query_async(const char *name, int class, int type, void *asr)
 
 	return (as);
 }
+DEF_WEAK(res_query_async);
 
 struct asr_query *
 _res_query_async_ctx(const char *name, int class, int type, struct asr_ctx *a_ctx)

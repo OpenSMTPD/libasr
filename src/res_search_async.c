@@ -1,4 +1,4 @@
-/*	$OpenBSD: res_search_async.c,v 1.14 2014/07/23 21:26:25 eric Exp $	*/
+/*	$OpenBSD: res_search_async.c,v 1.21 2017/02/27 10:44:46 jca Exp $	*/
 /*
  * Copyright (c) 2012 Eric Faurot <eric@openbsd.org>
  *
@@ -53,6 +53,7 @@ res_search_async(const char *name, int class, int type, void *asr)
 
 	return (as);
 }
+DEF_WEAK(res_search_async);
 
 struct asr_query *
 _res_search_async_ctx(const char *name, int class, int type, struct asr_ctx *ac)

@@ -18,6 +18,10 @@
 /* source compat */
 #define ASR_BUFSIZ	1024
 
+#define DEF_WEAK(x)
+#define __THREAD_NAME(x) __thread_name_ ## x
+#define __BEGIN_HIDDEN_DECLS
+#define __END_HIDDEN_DECLS
 
 /*
  * netdb.h

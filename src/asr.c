@@ -1,4 +1,4 @@
-/*	$OpenBSD: asr.c,v 1.34 2014/09/15 06:15:48 guenther Exp $	*/
+/*	$OpenBSD: asr.c,v 1.61 2018/10/22 17:31:24 krw Exp $	*/
 /*
  * Copyright (c) 2010-2012 Eric Faurot <eric@openbsd.org>
  *
@@ -23,7 +23,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <arpa/nameser.h>
-#include <sys/time.h>
 #include <netdb.h>
 
 #include <asr.h>
@@ -34,8 +33,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <unistd.h>
+#include <limits.h>
 
 #include "asr_private.h"
 
@@ -59,6 +58,7 @@ static int asr_ndots(const char *);
 static void pass0(char **, int, struct asr_ctx *);
 static int strsplit(char *, char **, int);
 static void asr_ctx_envopts(struct asr_ctx *);
+static void *__THREAD_NAME(_asr);
 
 static struct asr *_asr = NULL;
 
@@ -166,9 +166,10 @@ asr_run(struct asr_query *as, struct asr_result *ar)
 
 	return (r);
 }
+DEF_WEAK(asr_run);
 
 /*
- * Same as above, but run in a loop that handles the fd conditions result.
+ * Same as asr_run, but run in a loop that handles the fd conditions result.
  */
 int
 asr_run_sync(struct asr_query *as, struct asr_result *ar)
@@ -208,10 +209,11 @@ asr_run_sync(struct asr_query *as, struct asr_result *ar)
 
 	return (r);
 }
+DEF_WEAK(asr_run_sync);
 
 /*
  * Create a new async request of the given "type" on the async context "ac".
- * Take a reference on it so it does not gets deleted while the async query
+ * Take a reference on it so it does not get deleted while the async query
  * is running.
  */
 struct asr_query *
@@ -299,7 +301,7 @@ _asr_async_free(struct asr_query *as)
 
 /*
  * Get a context from the given resolver. This takes a new reference to
- * the returned context, which *must* be explicitely dropped when done
+ * the returned context, which *must* be explicitly dropped when done
  * using this context.
  */
 struct asr_ctx *

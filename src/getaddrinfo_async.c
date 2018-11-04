@@ -1,4 +1,4 @@
-/*	$OpenBSD: getaddrinfo_async.c,v 1.31 2014/11/18 20:51:00 krw Exp $	*/
+/*	$OpenBSD: getaddrinfo_async.c,v 1.56 2018/11/03 09:13:24 eric Exp $	*/
 /*
  * Copyright (c) 2012 Eric Faurot <eric@openbsd.org>
  *
@@ -28,10 +28,11 @@
 #include <asr.h>
 #include <errno.h>
 #include <ifaddrs.h>
-#include <resolv.h> /* for res_hnok */
+#include <resolv.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
 
 #include "asr_private.h"
 
@@ -61,7 +62,7 @@ static const struct match matches[] = {
 
 #define MATCH_FAMILY(a, b) ((a) == matches[(b)].family || (a) == PF_UNSPEC)
 #define MATCH_PROTO(a, b) ((a) == matches[(b)].protocol || (a) == 0 || matches[(b)].protocol == 0)
-/* Do not match SOCK_RAW unless explicitely specified */
+/* Do not match SOCK_RAW unless explicitly specified */
 #define MATCH_SOCKTYPE(a, b) ((a) == matches[(b)].socktype || ((a) == 0 && \
 				matches[(b)].socktype != SOCK_RAW))
 
@@ -108,6 +109,7 @@ getaddrinfo_async(const char *hostname, const char *servname,
 	_asr_ctx_unref(ac);
 	return (NULL);
 }
+DEF_WEAK(getaddrinfo_async);
 
 static int
 getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
@@ -146,7 +148,7 @@ getaddrinfo_async_run(struct asr_query *as, struct asr_result *ar)
 			async_set_state(as, ASR_STATE_HALT);
 			break;
 		}
-
+		
 		ai = &as->as.ai.hints;
 
 #ifdef EAI_BADHINTS

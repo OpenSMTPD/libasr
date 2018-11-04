@@ -1,4 +1,4 @@
-/*	$OpenBSD: asr_debug.c,v 1.17 2014/03/26 18:13:15 eric Exp $	*/
+/*	$OpenBSD: asr_debug.c,v 1.25 2018/04/28 15:16:49 schwarze Exp $	*/
 /*
  * Copyright (c) 2012 Eric Faurot <eric@openbsd.org>
  *

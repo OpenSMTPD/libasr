@@ -1,4 +1,4 @@
-/*	$OpenBSD: asr_private.h,v 1.26 2014/04/17 15:28:26 guenther Exp $	*/
+/*	$OpenBSD: asr_private.h,v 1.47 2018/04/28 15:16:49 schwarze Exp $	*/
 /*
  * Copyright (c) 2012 Eric Faurot <eric@openbsd.org>
  *
@@ -32,6 +32,7 @@
 
 #define OPCODE(v)	((v) & OPCODE_MASK)
 #define RCODE(v)	((v) & RCODE_MASK)
+
 
 struct asr_pack {
 	char		*buf;
@@ -292,6 +293,8 @@ enum asr_state {
 
 #define MAXPACKETSZ	4096
 
+__BEGIN_HIDDEN_DECLS
+
 /* asr_utils.c */
 void _asr_pack_init(struct asr_pack *, char *, size_t);
 int _asr_pack_header(struct asr_pack *, const struct asr_dns_header *);
@@ -359,3 +362,5 @@ extern FILE *_asr_debug;
 		_asr_statestr((a)->as_state),	\
 		_asr_statestr((s)));		\
 	(a)->as_state = (s); } while (0)
+
+__END_HIDDEN_DECLS

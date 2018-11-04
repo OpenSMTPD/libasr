@@ -1,4 +1,4 @@
-/*	$OpenBSD: gethostnamadr_async.c,v 1.32 2014/11/02 13:59:16 eric Exp $	*/
+/*	$OpenBSD: gethostnamadr_async.c,v 1.44 2018/04/28 15:16:49 schwarze Exp $	*/
 /*
  * Copyright (c) 2012 Eric Faurot <eric@openbsd.org>
  *
@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
 
 #include "asr_private.h"
 
@@ -60,6 +61,7 @@ gethostbyname_async(const char *name, void *asr)
 {
 	return gethostbyname2_async(name, AF_INET, asr);
 }
+DEF_WEAK(gethostbyname_async);
 
 struct asr_query *
 gethostbyname2_async(const char *name, int af, void *asr)
@@ -96,6 +98,7 @@ gethostbyname2_async(const char *name, int af, void *asr)
 	_asr_ctx_unref(ac);
 	return (NULL);
 }
+DEF_WEAK(gethostbyname2_async);
 
 struct asr_query *
 gethostbyaddr_async(const void *addr, socklen_t len, int af, void *asr)
@@ -109,6 +112,7 @@ gethostbyaddr_async(const void *addr, socklen_t len, int af, void *asr)
 
 	return (as);
 }
+DEF_WEAK(gethostbyaddr_async);
 
 struct asr_query *
 _gethostbyaddr_async_ctx(const void *addr, socklen_t len, int af,

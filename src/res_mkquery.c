@@ -1,4 +1,4 @@
-/*	$OpenBSD: res_mkquery.c,v 1.8 2014/03/26 18:13:15 eric Exp $	*/
+/*	$OpenBSD: res_mkquery.c,v 1.11 2017/02/27 11:38:08 jca Exp $	*/
 /*
  * Copyright (c) 2012 Eric Faurot <eric@openbsd.org>
  *
