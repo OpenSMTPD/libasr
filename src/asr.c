@@ -288,12 +288,6 @@ _asr_async_free(struct asr_query *as)
 			free(as->as.hostnamadr.name);
 		break;
 
-	case ASR_GETNETBYNAME:
-	case ASR_GETNETBYADDR:
-		if (as->as.netnamadr.name)
-			free(as->as.netnamadr.name);
-		break;
-
 	case ASR_GETADDRINFO:
 		if (as->as.ai.aifirst)
 			freeaddrinfo(as->as.ai.aifirst);

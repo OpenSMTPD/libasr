@@ -115,8 +115,6 @@ enum async_type {
 	ASR_GETRRSETBYNAME,
 	ASR_GETHOSTBYNAME,
 	ASR_GETHOSTBYADDR,
-	ASR_GETNETBYNAME,
-	ASR_GETNETBYADDR,
 	ASR_GETADDRINFO,
 	ASR_GETNAMEINFO,
 };
@@ -160,6 +158,7 @@ struct asr {
 #define	ASYNC_NODATA		0x00000100
 #define	ASYNC_AGAIN		0x00000200
 
+#define	ASYNC_GETNET		0x00001000
 #define	ASYNC_EXTOBUF		0x00002000
 
 #define	ASYNC_NO_INET		0x00010000
@@ -230,12 +229,6 @@ struct asr_query {
 			int		 addrlen;
 			int		 subq_h_errno;
 		} hostnamadr;
-
-		struct {
-			char		*name;
-			int		 family;
-			in_addr_t	 addr;
-		} netnamadr;
 
 		struct {
 			char		*hostname;
