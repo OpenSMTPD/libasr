@@ -168,6 +168,59 @@ AC_LINK_IFELSE(
             AC_MSG_RESULT([no])])
       ])
 
+##
+AC_DEFUN([LIBASR_CHECK___P_TYPE], [AC_LANG_PROGRAM([[
+    #include <sys/types.h>
+    #include <netinet/in.h>
+    #include <arpa/nameser.h>
+    #include <resolv.h>
+    ]], [[
+    __p_type(0);
+    ]])
+])
+AC_MSG_CHECKING([if __p_type() will build])
+AC_LINK_IFELSE(
+    [ LIBASR_CHECK___P_TYPE ],
+    [ AC_MSG_RESULT([yes])
+      AC_DEFINE([HAVE___P_TYPE], [1], [Have __p_type()])],
+    [ AC_MSG_RESULT([no])
+      saved_LIBS="$LIBS"
+      LIBS="$LIBS -lresolv"
+      AC_MSG_CHECKING([if __p_type() will build with -lresolv])
+      AC_LINK_IFELSE(
+          [ LIBASR_CHECK___P_TYPE ],
+          [ AC_MSG_RESULT([yes])
+            AC_DEFINE([HAVE___P_TYPE], [1], [Have __p_type()])],
+          [ LIBS="$saved_LIBS"
+            AC_MSG_RESULT([no])])
+      ])
+
+AC_DEFUN([LIBASR_CHECK___P_CLASS], [AC_LANG_PROGRAM([[
+    #include <sys/types.h>
+    #include <netinet/in.h>
+    #include <arpa/nameser.h>
+    #include <resolv.h>
+    ]], [[
+    __p_class(0);
+    ]])
+])
+AC_MSG_CHECKING([if __p_class() will build])
+AC_LINK_IFELSE(
+    [ LIBASR_CHECK___P_CLASS ],
+    [ AC_MSG_RESULT([yes])
+      AC_DEFINE([HAVE___P_CLASS], [1], [Have __p_class()])],
+    [ AC_MSG_RESULT([no])
+      saved_LIBS="$LIBS"
+      LIBS="$LIBS -lresolv"
+      AC_MSG_CHECKING([if __p_class() will build with -lresolv])
+      AC_LINK_IFELSE(
+          [ LIBASR_CHECK___P_CLASS ],
+          [ AC_MSG_RESULT([yes])
+            AC_DEFINE([HAVE___P_CLASS], [1], [Have __p_class()])],
+          [ LIBS="$saved_LIBS"
+            AC_MSG_RESULT([no])])
+      ])
+
 #
 # OUTPUT
 #

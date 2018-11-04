@@ -2,6 +2,7 @@ lib_LTLIBRARIES = 	libasr.la
 
 libasr_la_SOURCES  =	asr.c
 libasr_la_SOURCES +=	asr_debug.c
+libasr_la_SOURCES +=	asr_compat.c
 libasr_la_SOURCES +=	asr_utils.c
 libasr_la_SOURCES +=	getaddrinfo_async.c
 libasr_la_SOURCES +=	gethostnamadr_async.c

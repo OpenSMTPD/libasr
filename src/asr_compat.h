@@ -65,3 +65,11 @@
 #ifndef	DNS_MESSAGEEXTFLAG_DO
 #define	DNS_MESSAGEEXTFLAG_DO	0x8000U
 #endif
+
+#ifndef HAVE___P_CLASS
+const char * __p_class(int);
+#endif
+
+#ifndef HAVE___P_TYPE
+const char * __p_type(int);
+#endif
