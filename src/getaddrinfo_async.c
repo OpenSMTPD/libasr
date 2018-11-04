@@ -477,7 +477,7 @@ get_port(const char *servname, const char *proto, int numonly)
 #ifdef HAVE_STRUCT_SERVENT_DATA
 	struct servent_data	sed;
 #endif
-	int			port, r;
+	int			port;
 	const char		*e;
 
 	if (servname == NULL)
@@ -492,21 +492,16 @@ get_port(const char *servname, const char *proto, int numonly)
 	if (numonly)
 		return (-2);
 
+	port = -1;
 #ifdef HAVE_STRUCT_SERVENT_DATA
 	memset(&sed, 0, sizeof(sed));
-#endif
 #ifdef HAVE_GETSERVBYNAME_R_4_ARGS
-	r = getservbyname_r(servname, proto, &se, &sed);
-#else
-	r = -1;
+	if (getservbyname_r(servname, proto, &se, &sed) != -1)
+		port = ntohs(se.s_port);
 #endif
-	port = ntohs(se.s_port);
 #ifdef HAVE_ENDSERVENT_R
 	endservent_r(&sed);
 #endif
-
-	if (r == -1)
-		return (-1); /* not found */
 
 	return (port);
 }
