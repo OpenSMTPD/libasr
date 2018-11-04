@@ -2,6 +2,7 @@ noinst_LIBRARIES =		libopenbsdcompat.a
 
 libopenbsdcompat_a_SOURCES =	fgetln.c
 libopenbsdcompat_a_SOURCES +=	reallocarray.c
+libopenbsdcompat_a_SOURCES +=	recallocarray.c
 libopenbsdcompat_a_SOURCES +=	res_hnok.c
 libopenbsdcompat_a_SOURCES +=	res_randomid.c
 libopenbsdcompat_a_SOURCES +=	strlcat.c

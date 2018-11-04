@@ -669,18 +669,10 @@ ensure_ibuf(struct asr_query *as, size_t n)
 {
 	char	*t;
 
-	if (as->as.dns.ibuf == NULL) {
-		as->as.dns.ibuf = malloc(n);
-		if (as->as.dns.ibuf == NULL)
-			return (-1); /* errno set */
-		as->as.dns.ibufsize = n;
-		return (0);
-	}
-
 	if (as->as.dns.ibufsize >= n)
 		return (0);
 
-	t = realloc(as->as.dns.ibuf, n);
+	t = recallocarray(as->as.dns.ibuf, as->as.dns.ibufsize, n, 1);
 	if (t == NULL)
 		return (-1); /* errno set */
 	as->as.dns.ibuf = t;
