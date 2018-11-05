@@ -495,6 +495,7 @@ get_port(const char *servname, const char *proto, int numonly)
 	port = -1;
 #ifdef HAVE_STRUCT_SERVENT_DATA
 	memset(&sed, 0, sizeof(sed));
+#endif
 #ifdef HAVE_GETSERVBYNAME_R_4_ARGS
 	if (getservbyname_r(servname, proto, &se, &sed) != -1)
 		port = ntohs(se.s_port);
