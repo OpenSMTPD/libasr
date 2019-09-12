@@ -12,7 +12,7 @@ jobs:
     - name: boostrap
       run: bash bootstrap
     - name: configure
-      run: ./configure --prefix 
+      run: ./configure
     - name: make
       run: make
     - name: make install
