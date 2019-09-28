@@ -1,4 +1,4 @@
-libasr 1.0.3  (2017/02/??)
+libasr 1.0.3  (2019/09/28)
 --------------------------
 * add support for edns0 and dnssec
 * remove support for HOSTALIASES
