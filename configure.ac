@@ -91,6 +91,21 @@ OPENBSD_CHECK_FUNCTIONS
 # linking against other libs (-lresolv for instance) in all cases.
 # It has to be improved at some point.
 #
+AC_DEFUN([LIBASR_CHECK_EXPLICIT_BZERO], [AC_LANG_PROGRAM([[
+    #include <string.h>
+    ]], [[
+    char c;
+    explicit_bzero((void *)&c, 1);
+    ]])
+])
+AC_MSG_CHECKING([if explicit_bzero() will build])
+AC_LINK_IFELSE(
+    [ LIBASR_CHECK_EXPLICIT_BZERO ],
+    [ AC_MSG_RESULT([yes])
+      AC_DEFINE([HAVE_EXPLICIT_BZERO], [1], [Have explicit_bzero()])],
+    [ AC_MSG_RESULT([no])
+      ])
+
 AC_DEFUN([LIBASR_CHECK_CLOCK_GETTIME], [AC_LANG_PROGRAM([[
     #include <time.h>
     ]], [[
