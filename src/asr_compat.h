@@ -20,8 +20,13 @@
 
 #define DEF_WEAK(x)
 #define __THREAD_NAME(x) __thread_name_ ## x
+
+#ifndef __BEGIN_HIDDEN_DECLS
 #define __BEGIN_HIDDEN_DECLS
+#endif
+#ifndef __END_HIDDEN_DECLS
 #define __END_HIDDEN_DECLS
+#endif
 
 /*
  * netdb.h
