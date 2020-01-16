@@ -23,3 +23,7 @@ res_hnok(const char *);
 unsigned int
 res_randomid(void);
 #endif
+
+#ifndef MAXDNAME
+#define MAXDNAME    1025
+#endif
