@@ -1,3 +1,8 @@
+libasr 1.0.4  (2020/01/17)
+--------------------------
+* add definition of MAXDNAME for systems that lack it
+* some libc require include of nameser_compat.h for rr types definition
+
 libasr 1.0.3  (2019/09/28)
 --------------------------
 * add support for edns0 and dnssec
