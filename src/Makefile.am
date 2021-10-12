@@ -14,7 +14,7 @@ libasr_la_SOURCES +=	res_send_async.c
 include_HEADERS =	asr.h
 
 libasr_la_CPPFLAGS =	-I$(builddir)/../openbsd-compat/include
-libasr_la_LIBADD =	$(builddir)/../openbsd-compat/libopenbsdcompat.a
+libasr_la_LIBADD =	$(builddir)/../openbsd-compat/libopenbsdcompat.la
 libasr_la_LDFLAGS =	-version-info 0:3:0
 
 EXTRA_DIST =		asr_compat.h
