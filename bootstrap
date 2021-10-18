@@ -16,6 +16,35 @@
 # Die if an error occurs
 set -e
 
+quiet="false"
+quietarg=
+usage()
+{
+  echo
+  echo "usage: ${progname} [-h] [-q]"
+  echo
+  echo "options:"
+  echo "	-h .. display this message and exit"
+  echo "	-q .. quiet, don't display directories"
+  echo
+  exit 1
+}
+
+while test $# -gt 0; do
+case $1 in
+-h|--he|--hel|--help)
+  usage ;;
+-q|--qu|--qui|--quie|--quiet)
+  quiet="true"
+  quietarg=--quiet 	
+  shift;;
+-*) echo "unknown option $1"
+  usage ;;
+*) echo "invalid parameter $1"
+  usage ;;
+esac
+done
+
 # Guess whether we are using configure.ac or configure.in
 if test -f configure.ac; then
   conffile="configure.ac"
@@ -124,13 +153,13 @@ done
 IFS=$save_IFS
 
 # Explain what we are doing from now
-set -x
+test "$quiet" = "true" || set -x
 
 # Bootstrap package
 if test "$libtool" = "yes"; then
-  ${libtoolize} --copy --force
+  ${libtoolize} --copy --force $quietarg
   if test -n "$auxdir" -a ! "$auxdir" = "." -a -f "ltmain.sh"; then
-    echo "$0: working around a minor libtool issue"
+    test "$quiet" = "true" || echo "$0: working around a minor libtool issue"
     mv ltmain.sh "$auxdir/"
   fi
 fi
