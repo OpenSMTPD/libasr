@@ -1,6 +1,11 @@
 Description
 ===========
 
+> **Warning**
+> This repository is not updated and contains known issues that are
+> fixed in upstream OpenBSD.  Please use the bundled version in
+> OpenSMTPD instead.
+
 libasr is a free, simple and portable asynchronous resolver library.
 
 It allows to run dns queries and perform hostname resolutions in a fully
